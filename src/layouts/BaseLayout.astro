@@ -5,6 +5,7 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import { site } from '../data/site';
 import { defaultOgImage } from '../data/seo';
+import { withBase } from '../lib/paths';
 
 interface Props {
   title: string;
@@ -31,17 +32,24 @@ const resolvedTitle =
     ? 'Friseur Magdeburg - Atelier Haarkunst in Salbke'
     : `${title} | ${site.name}`);
 
+const homeURL = new URL(withBase('/'), Astro.site);
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const absoluteOgImage = new URL(ogImage, Astro.site).href;
 const resolvedOgTitle = ogTitle ?? resolvedTitle;
 
+const cssVars = [
+  `--flourish-mask: url('${withBase('/images/flourish.svg')}')`,
+  `--image-reviews-bg: url('${withBase('/images/reviews-bg.webp')}')`,
+  `--image-salon-bg: url('${withBase('/images/salon-bg.webp')}')`,
+].join('; ');
+
 const localBusinessSchema = {
   '@context': 'https://schema.org',
   '@type': 'HairSalon',
-  '@id': new URL('/#organization', Astro.site).href,
+  '@id': `${homeURL.href}#organization`,
   name: site.name,
   description: site.tagline,
-  url: Astro.site?.href,
+  url: homeURL.href,
   image: new URL(site.images.logo, Astro.site).href,
   logo: new URL(site.images.logo, Astro.site).href,
   telephone: site.phoneHref.replace('tel:', ''),
@@ -65,7 +73,7 @@ const localBusinessSchema = {
 ---
 
 <!doctype html>
-<html lang="de">
+<html lang="de" style={cssVars}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -92,10 +100,10 @@ const localBusinessSchema = {
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={absoluteOgImage} />
 
-    <link rel="icon" type="image/png" href="/favicon.png" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="apple-touch-icon" href="/favicon.png" />
-    <link rel="sitemap" type="application/xml" href="/sitemap.xml" />
+    <link rel="icon" type="image/png" href={withBase('/favicon.png')} />
+    <link rel="icon" type="image/svg+xml" href={withBase('/favicon.svg')} />
+    <link rel="apple-touch-icon" href={withBase('/favicon.png')} />
+    <link rel="sitemap" type="application/xml" href={withBase('/sitemap.xml')} />
 
     <title>{resolvedTitle}</title>
 

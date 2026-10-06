@@ -1,5 +1,6 @@
 ---
 import { priceCategories } from '../data/prices';
+import { withBase } from '../lib/paths';
 ---
 
 <section class="prices" aria-labelledby="prices-heading">
@@ -57,7 +58,7 @@ import { priceCategories } from '../data/prices';
               </ul>
 
               <div class="prices__actions">
-                <a class="btn btn--ghost" href={`/preisliste/#${cat.id}`}>
+                <a class="btn btn--ghost" href={withBase(`/preisliste/#${cat.id}`)}>
                   Zur kompletten Preisliste
                 </a>
               </div>

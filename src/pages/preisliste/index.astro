@@ -3,6 +3,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import Hero from '../../components/Hero.astro';
 import { priceCategories, priceDisclaimer } from '../../data/prices';
 import { seoPages } from '../../data/seo';
+import { withBase } from '../../lib/paths';
 ---
 
 <BaseLayout
@@ -61,7 +62,7 @@ import { seoPages } from '../../data/seo';
     <div class="container price-page__notes">
       {priceDisclaimer.map((line) => <p>{line}</p>)}
       <p>Bei Fragen meldet euch gerne bei mir.</p>
-      <a class="btn btn--accent" href="/kontakt/#Form">Jetzt Termin anfragen</a>
+      <a class="btn btn--accent" href={withBase('/kontakt/#Form')}>Jetzt Termin anfragen</a>
     </div>
   </section>
 </BaseLayout>
@@ -195,7 +196,7 @@ import { seoPages } from '../../data/seo';
     position: absolute;
     inset: 0;
     z-index: 0;
-    background-image: url('/images/salon-bg.webp');
+    background-image: var(--image-salon-bg);
     background-size: cover;
     background-position: center;
     opacity: 0.22;

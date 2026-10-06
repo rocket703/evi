@@ -1,4 +1,6 @@
 ---
+import { withBase } from '../lib/paths';
+
 interface Props {
   title: string;
   teaser: string;
@@ -10,7 +12,7 @@ interface Props {
 const {
   title,
   teaser,
-  href = '/services/',
+  href = withBase('/services/'),
   imageSrc,
   imageAlt = title,
 } = Astro.props;

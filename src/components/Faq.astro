@@ -1,6 +1,7 @@
 ---
 import { openingHours } from '../data/faq';
 import { site } from '../data/site';
+import { withBase } from '../lib/paths';
 ---
 
 <section class="faq section" aria-labelledby="faq-heading">
@@ -74,7 +75,7 @@ import { site } from '../data/site';
           </p>
           <p>
             Über das
-            <a href="/kontakt/#Form">Kontaktformular</a>
+            <a href={withBase('/kontakt/#Form')}>Kontaktformular</a>
             könnt ihr uns auch eine Nachricht schreiben.
           </p>
         </div>
@@ -92,7 +93,7 @@ import { site } from '../data/site';
             für euch einplanen.
           </p>
           <p>
-            <a href="/kontakt/#Form">Jetzt Termin anfragen</a>
+            <a href={withBase('/kontakt/#Form')}>Jetzt Termin anfragen</a>
           </p>
         </div>
       </details>

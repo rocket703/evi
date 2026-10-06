@@ -1,12 +1,14 @@
 ---
 import { nav, site } from '../data/site';
+import { withBase } from '../lib/paths';
 
 const pathname = Astro.url.pathname;
+const homeHref = withBase('/');
 ---
 
 <header class="header">
   <div class="header__inner container">
-    <a class="header__brand" href="/" aria-label={site.name}>
+    <a class="header__brand" href={homeHref} aria-label={site.name}>
       <img
         class="header__logo"
         src={site.images.logo}

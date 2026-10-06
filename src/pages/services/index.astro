@@ -3,6 +3,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import Hero from '../../components/Hero.astro';
 import { services } from '../../data/services';
 import { seoPages } from '../../data/seo';
+import { withBase } from '../../lib/paths';
 ---
 
 <BaseLayout
@@ -50,7 +51,7 @@ import { seoPages } from '../../data/seo';
                 <p>{service.body}</p>
                 <a
                   class="btn btn--ghost"
-                  href={`/kontakt/?service=${service.slug}#Form`}
+                  href={withBase(`/kontakt/?service=${service.slug}#Form`)}
                 >
                   Termin anfragen
                 </a>
@@ -157,7 +158,7 @@ import { seoPages } from '../../data/seo';
     position: absolute;
     inset: 0;
     z-index: 0;
-    background-image: url('/images/salon-bg.webp');
+    background-image: var(--image-salon-bg);
     background-size: cover;
     background-position: center;
     opacity: 0.22;

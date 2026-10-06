@@ -1,3 +1,5 @@
+import { withBase } from '../lib/paths';
+
 export const site = {
   name: 'Atelier-Haarkunst',
   tagline: 'Dein Friseur im Süden von Magdeburg',
@@ -21,8 +23,8 @@ export const site = {
       'https://www.instagram.com/atelierhaarkunst?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==',
     facebook: 'https://www.facebook.com/AtelierHaarkunst',
     icons: {
-      instagram: '/images/social/instagram.webp',
-      facebook: '/images/social/facebook.webp',
+      instagram: withBase('/images/social/instagram.webp'),
+      facebook: withBase('/images/social/facebook.webp'),
     },
   },
   designer: {
@@ -30,21 +32,21 @@ export const site = {
     url: 'https://r3webdesign.de/',
   },
   images: {
-    logo: '/images/logo.webp',
-    hero: '/images/hero.webp',
-    salonBg: '/images/salon-bg.webp',
-    greatLengths: '/images/great-lengths.webp',
-    wappen: '/images/wappen-sachsen-anhalt.webp',
+    logo: withBase('/images/logo.webp'),
+    hero: withBase('/images/hero.webp'),
+    salonBg: withBase('/images/salon-bg.webp'),
+    greatLengths: withBase('/images/great-lengths.webp'),
+    wappen: withBase('/images/wappen-sachsen-anhalt.webp'),
   },
   funding: {
     note: 'Die Gründung dieses Unternehmens wurde mit Mitteln des Landes Sachsen – Anhalt unterstützt.',
-    pdfHref: '/Plakat-mit-www.pdf',
-    wappen: '/images/wappen-sachsen-anhalt.webp',
+    pdfHref: withBase('/Plakat-mit-www.pdf'),
+    wappen: withBase('/images/wappen-sachsen-anhalt.webp'),
   },
 } as const;
 
 export const nav = [
-  { label: 'Preisliste', href: '/preisliste/' },
-  { label: 'Services', href: '/services/' },
-  { label: 'Kontakt', href: '/kontakt/' },
+  { label: 'Preisliste', href: withBase('/preisliste/') },
+  { label: 'Services', href: withBase('/services/') },
+  { label: 'Kontakt', href: withBase('/kontakt/') },
 ] as const;

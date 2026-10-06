@@ -1,5 +1,6 @@
 ---
 import { site } from '../data/site';
+import { withBase } from '../lib/paths';
 
 interface Props {
   imageSrc?: string;
@@ -50,8 +51,8 @@ const {
           </p>
 
           <div class="hero__actions">
-            <a class="btn btn--accent" href="/kontakt/#Form">Termin vereinbaren</a>
-            <a class="btn btn--ghost-light" href="/preisliste/">Preisliste ansehen</a>
+            <a class="btn btn--accent" href={withBase('/kontakt/#Form')}>Termin vereinbaren</a>
+            <a class="btn btn--ghost-light" href={withBase('/preisliste/')}>Preisliste ansehen</a>
           </div>
         </div>
       </div>

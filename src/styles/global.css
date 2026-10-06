@@ -22,7 +22,10 @@
   --shadow-card: 0 8px 24px rgba(17, 92, 43, 0.08);
   --container: min(1120px, calc(100% - clamp(1.5rem, 5vw, 2.5rem)));
   --header-h: 4.25rem;
+  /* Override via BaseLayout when `base` is set (e.g. GitHub Pages /evi) */
   --flourish-mask: url('/images/flourish.svg');
+  --image-reviews-bg: url('/images/reviews-bg.webp');
+  --image-salon-bg: url('/images/salon-bg.webp');
 }
 
 *,

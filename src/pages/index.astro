@@ -11,6 +11,7 @@ import Funding from '../components/Funding.astro';
 import { homeServiceCards } from '../data/services';
 import { site } from '../data/site';
 import { seoPages } from '../data/seo';
+import { withBase } from '../lib/paths';
 ---
 
 <BaseLayout
@@ -65,7 +66,7 @@ import { seoPages } from '../data/seo';
                 <ServiceCard
                   title={service.title}
                   teaser={service.teaser}
-                  href={`/services/#${service.slug}`}
+                  href={withBase(`/services/#${service.slug}`)}
                   imageSrc={service.imageSrc}
                   imageAlt={service.title}
                 />
@@ -124,7 +125,7 @@ import { seoPages } from '../data/seo';
           – wir verwenden ausschließlich hochwertige Echthaare von Great Lengths
           für ein perfekt natürliches Ergebnis.
         </p>
-        <a class="btn btn--accent" href="/services/#haarverlaengerungen">
+        <a class="btn btn--accent" href={withBase('/services/#haarverlaengerungen')}>
           Mehr erfahren
         </a>
       </div>
@@ -269,7 +270,7 @@ import { seoPages } from '../data/seo';
     position: absolute;
     inset: 0;
     z-index: 0;
-    background-image: url('/images/salon-bg.webp');
+    background-image: var(--image-salon-bg);
     background-size: cover;
     background-position: center;
     opacity: 0.26;
