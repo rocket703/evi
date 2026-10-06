@@ -1,0 +1,283 @@
+---
+import { priceCategories } from '../data/prices';
+---
+
+<section class="prices" aria-labelledby="prices-heading">
+  <div class="container">
+    <div class="section__intro">
+      <h2 id="prices-heading">Unsere Preise im Überblick</h2>
+      <p>
+        Ein klarer Überblick über meine wichtigsten Leistungen – von Schnitt und
+        Farbe bis Beauty & Specials.
+      </p>
+    </div>
+
+    <div class="prices__shell">
+      <div class="prices__tabs" role="tablist" aria-label="Preiskategorien">
+        {
+          priceCategories.map((cat, i) => (
+            <button
+              class:list={['prices__tab', { 'is-active': i === 0 }]}
+              type="button"
+              role="tab"
+              id={`tab-${cat.id}`}
+              aria-selected={i === 0 ? 'true' : 'false'}
+              aria-controls={`panel-${cat.id}`}
+              data-price-tab={cat.id}
+            >
+              {cat.title}
+            </button>
+          ))
+        }
+      </div>
+
+      {
+        priceCategories.map((cat, i) => (
+          <div
+            class:list={['prices__panel', { 'is-active': i === 0 }]}
+            role="tabpanel"
+            id={`panel-${cat.id}`}
+            aria-labelledby={`tab-${cat.id}`}
+            hidden={i !== 0}
+            data-price-panel={cat.id}
+          >
+            <div class="prices__menu">
+              <header class="prices__menu-head">
+                <h3>{cat.title}</h3>
+              </header>
+
+              <ul class="prices__rows">
+                {cat.rows.map((row) => (
+                  <li>
+                    <span class="prices__name">{row.name}</span>
+                    <span class="prices__dots" aria-hidden="true"></span>
+                    {row.prices && <span class="prices__value">{row.prices}</span>}
+                  </li>
+                ))}
+              </ul>
+
+              <div class="prices__actions">
+                <a class="btn btn--ghost" href={`/preisliste/#${cat.id}`}>
+                  Zur kompletten Preisliste
+                </a>
+              </div>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .prices {
+    padding: clamp(2.5rem, 6vw, 4.5rem) 0;
+  }
+
+  .prices .section__intro h2::after {
+    display: none;
+  }
+
+  .prices__shell {
+    max-width: 44rem;
+    margin-inline: auto;
+  }
+
+  .prices__tabs {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.35rem 1.25rem;
+    margin-bottom: 1.75rem;
+    border-bottom: 1px solid color-mix(in srgb, var(--color-green-dark) 14%, transparent);
+  }
+
+  .prices__tab {
+    position: relative;
+    border: 0;
+    background: transparent;
+    color: var(--color-muted);
+    padding: 0.7rem 0.15rem 0.85rem;
+    font: inherit;
+    font-size: 0.95rem;
+    font-weight: 500;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: color 0.2s ease;
+  }
+
+  .prices__tab::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -1px;
+    height: 2px;
+    background: var(--color-accent);
+    transform: scaleX(0);
+    transition: transform 0.25s ease;
+  }
+
+  .prices__tab:hover {
+    color: var(--color-green-dark);
+  }
+
+  .prices__tab.is-active {
+    color: var(--color-green-dark);
+  }
+
+  .prices__tab.is-active::after {
+    transform: scaleX(1);
+  }
+
+  .prices__panel {
+    display: none;
+  }
+
+  .prices__panel.is-active {
+    display: block;
+    animation: prices-in 0.35s ease;
+  }
+
+  @keyframes prices-in {
+    from {
+      opacity: 0;
+      transform: translateY(0.4rem);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  .prices__menu {
+    background:
+      linear-gradient(
+        180deg,
+        color-mix(in srgb, var(--color-white) 92%, var(--color-bg)) 0%,
+        var(--color-white) 100%
+      );
+    border: 1px solid color-mix(in srgb, var(--color-green-dark) 10%, transparent);
+    border-radius: 1.25rem;
+    padding: clamp(1.4rem, 3vw, 2rem);
+    box-shadow: 0 18px 40px rgba(17, 92, 43, 0.06);
+  }
+
+  .prices__menu-head {
+    margin-bottom: 1rem;
+  }
+
+  .prices__menu-head h3 {
+    margin: 0;
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: 600;
+    font-size: clamp(1.75rem, 3vw, 2.15rem);
+    color: var(--color-green-dark);
+  }
+
+  .prices__rows {
+    display: grid;
+    gap: 0;
+  }
+
+  .prices__rows li {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: baseline;
+    gap: 0.65rem;
+    padding: 0.95rem 0;
+    border-bottom: 1px solid color-mix(in srgb, var(--color-border) 65%, transparent);
+  }
+
+  .prices__rows li:last-child {
+    border-bottom: 0;
+  }
+
+  .prices__name {
+    font-weight: 600;
+    color: var(--color-ink);
+    font-size: 0.98rem;
+  }
+
+  .prices__dots {
+    height: 0;
+    border-bottom: 1px dotted color-mix(in srgb, var(--color-green-dark) 28%, transparent);
+    transform: translateY(-0.35rem);
+  }
+
+  .prices__value {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--color-green-dark);
+    text-align: right;
+    white-space: nowrap;
+  }
+
+  .prices__actions {
+    display: flex;
+    justify-content: center;
+    margin-top: 1.5rem;
+  }
+
+  @media (max-width: 640px) {
+    .prices__tabs {
+      flex-wrap: nowrap;
+      justify-content: flex-start;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      margin-inline: calc(-1 * clamp(0.75rem, 4vw, 1.25rem));
+      padding-inline: clamp(1rem, 5vw, 1.5rem);
+      gap: 1rem;
+    }
+
+    .prices__tabs::-webkit-scrollbar {
+      display: none;
+    }
+
+    .prices__rows li {
+      grid-template-columns: 1fr;
+      gap: 0.25rem;
+    }
+
+    .prices__dots {
+      display: none;
+    }
+
+    .prices__value {
+      text-align: right;
+      white-space: normal;
+      font-size: 1.15rem;
+    }
+
+    .prices__actions .btn {
+      width: min(100%, 22rem);
+    }
+  }
+</style>
+
+<script>
+  const tabs = document.querySelectorAll('[data-price-tab]');
+  const panels = document.querySelectorAll('[data-price-panel]');
+
+  tabs.forEach((tab) => {
+    tab.addEventListener('click', () => {
+      const id = tab.getAttribute('data-price-tab');
+
+      tabs.forEach((t) => {
+        const active = t === tab;
+        t.classList.toggle('is-active', active);
+        t.setAttribute('aria-selected', String(active));
+      });
+
+      panels.forEach((panel) => {
+        const active = panel.getAttribute('data-price-panel') === id;
+        panel.classList.toggle('is-active', active);
+        panel.toggleAttribute('hidden', !active);
+      });
+    });
+  });
+</script>

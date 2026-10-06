@@ -1,0 +1,228 @@
+---
+import { openingHours } from '../data/faq';
+import { site } from '../data/site';
+---
+
+<section class="faq section" aria-labelledby="faq-heading">
+  <div class="container">
+    <div class="section__intro">
+      <h2 id="faq-heading">Häufige Fragen</h2>
+      <p>
+        Öffnungszeiten, Adresse und Erreichbarkeit – die wichtigsten Infos auf
+        einen Blick.
+      </p>
+    </div>
+
+    <div class="faq__list">
+      <details class="faq__item">
+        <summary>
+          <span>Welche Öffnungszeiten habt ihr?</span>
+          <span class="faq__icon" aria-hidden="true"></span>
+        </summary>
+        <div class="faq__answer">
+          <p>Aktuell gelten laut Google-Profil folgende Öffnungszeiten:</p>
+          <ul class="faq__hours">
+            {
+              openingHours.map((row) => (
+                <li>
+                  <span>{row.day}</span>
+                  <span>{row.hours}</span>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+      </details>
+
+      <details class="faq__item">
+        <summary>
+          <span>Wo liegt der Salon und wie komme ich hin?</span>
+          <span class="faq__icon" aria-hidden="true"></span>
+        </summary>
+        <div class="faq__answer">
+          <p>
+            Atelier Haarkunst liegt in Magdeburg-Salbke an der
+            <strong>
+              {site.address.street}, {site.address.zip} {site.address.city}
+            </strong>.
+            Mit dem Auto und den öffentlichen Verkehrsmitteln gut erreichbar –
+            in der Umgebung gibt es Parkmöglichkeiten.
+          </p>
+          <p>
+            <a
+              href={site.address.mapsUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Route in Google Maps öffnen
+            </a>
+          </p>
+        </div>
+      </details>
+
+      <details class="faq__item">
+        <summary>
+          <span>Wie erreiche ich euch?</span>
+          <span class="faq__icon" aria-hidden="true"></span>
+        </summary>
+        <div class="faq__answer">
+          <p>
+            Am einfachsten per Telefon unter
+            <a href={site.phoneHref}>{site.phone}</a>
+            oder per E-Mail an
+            <a href={`mailto:${site.email}`}>{site.email}</a>.
+          </p>
+          <p>
+            Über das
+            <a href="/kontakt/#Form">Kontaktformular</a>
+            könnt ihr uns auch eine Nachricht schreiben.
+          </p>
+        </div>
+      </details>
+
+      <details class="faq__item">
+        <summary>
+          <span>Wie vereinbare ich einen Termin?</span>
+          <span class="faq__icon" aria-hidden="true"></span>
+        </summary>
+        <div class="faq__answer">
+          <p>
+            Am besten ruft ihr an oder schreibt eine kurze Nachricht mit
+            Wunschtermin und gewünschter Leistung. So kann ich mir genug Zeit
+            für euch einplanen.
+          </p>
+          <p>
+            <a href="/kontakt/#Form">Jetzt Termin anfragen</a>
+          </p>
+        </div>
+      </details>
+
+      <details class="faq__item">
+        <summary>
+          <span>Welche Zahlungsmöglichkeiten gibt es?</span>
+          <span class="faq__icon" aria-hidden="true"></span>
+        </summary>
+        <div class="faq__answer">
+          <p>
+            Bei uns könnt ihr bar oder mit EC-/Debitkarte bezahlen.
+          </p>
+        </div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<style>
+  .faq__list {
+    max-width: 44rem;
+    margin-inline: auto;
+    display: grid;
+    gap: 0.75rem;
+  }
+
+  .faq__item {
+    background: var(--color-white);
+    border: 1px solid color-mix(in srgb, var(--color-green-dark) 10%, transparent);
+    border-radius: 1rem;
+    box-shadow: 0 12px 28px rgba(17, 92, 43, 0.05);
+    overflow: hidden;
+  }
+
+  .faq__item summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1.1rem 1.25rem;
+    cursor: pointer;
+    list-style: none;
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: clamp(1.2rem, 2.4vw, 1.45rem);
+    font-weight: 600;
+    color: var(--color-green-dark);
+  }
+
+  .faq__item summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .faq__icon {
+    flex-shrink: 0;
+    position: relative;
+    width: 1.1rem;
+    height: 1.1rem;
+  }
+
+  .faq__icon::before,
+  .faq__icon::after {
+    content: '';
+    position: absolute;
+    background: var(--color-accent);
+    border-radius: 2px;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+  }
+
+  .faq__icon::before {
+    inset: 50% 0 auto;
+    height: 2px;
+    transform: translateY(-50%);
+  }
+
+  .faq__icon::after {
+    inset: 0 auto 0 50%;
+    width: 2px;
+    transform: translateX(-50%);
+  }
+
+  .faq__item[open] .faq__icon::after {
+    opacity: 0;
+    transform: translateX(-50%) scaleY(0);
+  }
+
+  .faq__answer {
+    padding: 0 1.25rem 1.25rem;
+    color: var(--color-text);
+  }
+
+  .faq__answer p {
+    margin: 0 0 0.75rem;
+  }
+
+  .faq__answer p:last-child {
+    margin-bottom: 0;
+  }
+
+  .faq__answer a {
+    font-weight: 500;
+  }
+
+  .faq__hours {
+    display: grid;
+    gap: 0.35rem;
+    margin: 0.85rem 0 0;
+    padding: 0.85rem 1rem;
+    background: color-mix(in srgb, var(--color-bg) 70%, white);
+    border-radius: 0.75rem;
+  }
+
+  .faq__hours li {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    font-size: 0.95rem;
+  }
+
+  .faq__hours li span:first-child {
+    color: var(--color-ink);
+    font-weight: 500;
+  }
+
+  .faq__hours li span:last-child {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: 600;
+    color: var(--color-green-dark);
+    text-align: right;
+  }
+</style>

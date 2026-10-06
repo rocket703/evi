@@ -1,0 +1,636 @@
+---
+import { galleryItems } from '../data/services';
+---
+
+<section class="gallery section" aria-labelledby="gallery-heading">
+  <div class="container">
+    <div class="section__intro">
+      <h2 id="gallery-heading">Inspiration für Ihren neuen Look</h2>
+      <p>
+        In unserer Galerie entdecken Sie eine Auswahl an aktuellen Frisuren,
+        Farben und Stylings aus dem Salon in Magdeburg.
+      </p>
+    </div>
+
+    <div class="gallery__grid">
+      {
+        galleryItems.map((item) => (
+          <figure class="gallery__item">
+            <button
+              type="button"
+              class="gallery__trigger"
+              data-lightbox-open
+              data-lightbox-src={item.src}
+              data-lightbox-alt={item.alt}
+              aria-label={`${item.alt} vergrößern`}
+            >
+              <img
+                class="gallery__img"
+                src={item.src}
+                alt={item.alt}
+                width="700"
+                height="700"
+                loading="lazy"
+                decoding="async"
+              />
+            </button>
+            <figcaption class="sr-only">{item.alt}</figcaption>
+          </figure>
+        ))
+      }
+    </div>
+
+    <div class="gallery-carousel" data-gallery-carousel>
+      <div
+        class="gallery-carousel__track"
+        tabindex="0"
+        role="region"
+        aria-roledescription="Karussell"
+        aria-label="Frisuren-Galerie"
+        data-gallery-track
+      >
+        {
+          galleryItems.map((item, i) => (
+            <figure class="gallery-carousel__slide" data-gallery-slide>
+              <button
+                type="button"
+                class="gallery__trigger"
+                data-lightbox-open
+                data-lightbox-src={item.src}
+                data-lightbox-alt={item.alt}
+                aria-label={`${item.alt} vergrößern`}
+              >
+                <img
+                  class="gallery__img"
+                  src={item.src}
+                  alt={item.alt}
+                  width="700"
+                  height="700"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </button>
+              <figcaption>
+                <span class="gallery-carousel__count">
+                  {i + 1} / {galleryItems.length}
+                </span>
+                {item.alt}
+              </figcaption>
+            </figure>
+          ))
+        }
+      </div>
+
+      <div class="gallery-carousel__controls">
+        <button
+          type="button"
+          class="gallery-carousel__btn"
+          aria-label="Vorheriges Bild"
+          data-gallery-prev
+        >
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path d="M15 6 9 12l6 6"></path>
+          </svg>
+        </button>
+
+        <div class="gallery-carousel__dots" role="tablist" aria-label="Galerie-Folien" data-gallery-dots>
+          {
+            galleryItems.map((_, i) => (
+              <button
+                type="button"
+                class:list={['gallery-carousel__dot', { 'is-active': i === 0 }]}
+                role="tab"
+                aria-label={`Bild ${i + 1}`}
+                aria-selected={i === 0 ? 'true' : 'false'}
+                data-gallery-dot={i}
+              />
+            ))
+          }
+        </div>
+
+        <button
+          type="button"
+          class="gallery-carousel__btn"
+          aria-label="Nächstes Bild"
+          data-gallery-next
+        >
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path d="m9 6 6 6-6 6"></path>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div
+    class="lightbox"
+    data-lightbox
+    hidden
+    role="dialog"
+    aria-modal="true"
+    aria-label="Bildansicht"
+  >
+    <button
+      type="button"
+      class="lightbox__close"
+      data-lightbox-close
+      aria-label="Schließen"
+    >
+      <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <path d="M6 6l12 12M18 6 6 18"></path>
+      </svg>
+    </button>
+
+    <button
+      type="button"
+      class="lightbox__nav lightbox__nav--prev"
+      data-lightbox-prev
+      aria-label="Vorheriges Bild"
+    >
+      <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <path d="M15 6 9 12l6 6"></path>
+      </svg>
+    </button>
+
+    <img class="lightbox__img" data-lightbox-img alt="" />
+
+    <button
+      type="button"
+      class="lightbox__nav lightbox__nav--next"
+      data-lightbox-next
+      aria-label="Nächstes Bild"
+    >
+      <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <path d="m9 6 6 6-6 6"></path>
+      </svg>
+    </button>
+
+    <p class="lightbox__count" data-lightbox-count aria-live="polite"></p>
+  </div>
+</section>
+
+<style>
+  .gallery__grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+  }
+
+  .gallery__item {
+    margin: 0;
+    overflow: hidden;
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-card);
+  }
+
+  .gallery__trigger {
+    display: block;
+    width: 100%;
+    padding: 0;
+    border: 0;
+    background: none;
+    cursor: zoom-in;
+    border-radius: inherit;
+    overflow: hidden;
+  }
+
+  .gallery__trigger:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+  }
+
+  .gallery__img {
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.35s ease;
+  }
+
+  .gallery__trigger:hover .gallery__img {
+    transform: scale(1.04);
+  }
+
+  .gallery-carousel {
+    display: none;
+  }
+
+  .lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 1200;
+    display: grid;
+    place-items: center;
+    padding: 3.5rem 4.5rem 2.5rem;
+    background: rgba(8, 14, 10, 0.92);
+    backdrop-filter: blur(2px);
+  }
+
+  .lightbox[hidden] {
+    display: none;
+  }
+
+  .lightbox__img {
+    max-width: min(84vw, 56rem);
+    max-height: min(80vh, 56rem);
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    border-radius: 0.35rem;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.45);
+    user-select: none;
+  }
+
+  .lightbox__close,
+  .lightbox__nav {
+    display: grid;
+    place-items: center;
+    border: 0;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.12);
+    color: #fff;
+    cursor: pointer;
+    transition: background 0.15s ease, transform 0.15s ease;
+  }
+
+  .lightbox__close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    z-index: 2;
+    width: 2.85rem;
+    height: 2.85rem;
+  }
+
+  .lightbox__nav {
+    position: absolute;
+    top: 50%;
+    z-index: 2;
+    width: 3rem;
+    height: 3rem;
+    transform: translateY(-50%);
+  }
+
+  .lightbox__nav--prev {
+    left: 0.85rem;
+  }
+
+  .lightbox__nav--next {
+    right: 0.85rem;
+  }
+
+  .lightbox__close:hover,
+  .lightbox__close:focus-visible,
+  .lightbox__nav:hover,
+  .lightbox__nav:focus-visible {
+    background: rgba(255, 255, 255, 0.22);
+    outline: none;
+  }
+
+  .lightbox__close:hover,
+  .lightbox__close:focus-visible {
+    transform: scale(1.05);
+  }
+
+  .lightbox__nav:hover,
+  .lightbox__nav:focus-visible {
+    transform: translateY(-50%) scale(1.05);
+  }
+
+  .lightbox__count {
+    position: absolute;
+    bottom: 1rem;
+    left: 50%;
+    transform: translateX(-50%);
+    margin: 0;
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+  }
+
+  @media (max-width: 640px) {
+    .lightbox {
+      padding: 3.5rem 1rem 2.75rem;
+    }
+
+    .lightbox__nav {
+      width: 2.65rem;
+      height: 2.65rem;
+    }
+
+    .lightbox__nav--prev {
+      left: 0.4rem;
+    }
+
+    .lightbox__nav--next {
+      right: 0.4rem;
+    }
+
+    .lightbox__img {
+      max-width: min(92vw, 56rem);
+    }
+  }
+
+  @media (max-width: 900px) {
+    .gallery__grid {
+      display: none;
+    }
+
+    .gallery-carousel {
+      display: block;
+      margin-inline: calc(-1 * clamp(0.75rem, 4vw, 1.25rem));
+    }
+
+    .gallery-carousel__track {
+      display: flex;
+      gap: 0.85rem;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scroll-behavior: smooth;
+      -webkit-overflow-scrolling: touch;
+      overscroll-behavior-x: contain;
+      scrollbar-width: none;
+      padding: 0.25rem clamp(1rem, 5vw, 1.5rem) 0.5rem;
+      outline: none;
+    }
+
+    .gallery-carousel__track::-webkit-scrollbar {
+      display: none;
+    }
+
+    .gallery-carousel__slide {
+      flex: 0 0 min(78vw, 22rem);
+      margin: 0;
+      scroll-snap-align: center;
+      scroll-snap-stop: always;
+    }
+
+    .gallery-carousel__slide .gallery__trigger {
+      border-radius: var(--radius-card);
+      box-shadow: var(--shadow-card);
+    }
+
+    .gallery-carousel__slide .gallery__img {
+      border-radius: var(--radius-card);
+    }
+
+    .gallery-carousel__slide figcaption {
+      margin-top: 0.65rem;
+      text-align: center;
+      font-size: 0.875rem;
+      color: var(--color-text);
+      padding-inline: 0.25rem;
+    }
+
+    .gallery-carousel__count {
+      display: block;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--color-green-dark);
+      margin-bottom: 0.15rem;
+    }
+
+    .gallery-carousel__controls {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 0.85rem;
+    }
+
+    .gallery-carousel__btn {
+      display: none;
+    }
+
+    .gallery-carousel__dots {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.4rem;
+      max-width: 12rem;
+    }
+
+    .gallery-carousel__dot {
+      width: 0.5rem;
+      height: 0.5rem;
+      padding: 0;
+      border: 0;
+      border-radius: 999px;
+      background: color-mix(in srgb, var(--color-green-dark) 28%, white);
+      cursor: pointer;
+      transition: width 0.2s ease, background 0.2s ease;
+    }
+
+    .gallery-carousel__dot.is-active {
+      width: 1.25rem;
+      background: var(--color-green-dark);
+    }
+  }
+
+  @media (min-width: 901px) and (max-width: 1100px) {
+    .gallery__grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+</style>
+
+<script>
+  function initGalleryCarousel(root: Element) {
+    const track = root.querySelector<HTMLElement>('[data-gallery-track]');
+    const slides = [...root.querySelectorAll<HTMLElement>('[data-gallery-slide]')];
+    const dots = [...root.querySelectorAll<HTMLButtonElement>('[data-gallery-dot]')];
+    const prev = root.querySelector<HTMLButtonElement>('[data-gallery-prev]');
+    const next = root.querySelector<HTMLButtonElement>('[data-gallery-next]');
+
+    if (!track || slides.length === 0) return;
+
+    let index = 0;
+    let raf = 0;
+
+    const goTo = (i: number, behavior: ScrollBehavior = 'smooth') => {
+      index = (i + slides.length) % slides.length;
+      const slide = slides[index];
+      const left =
+        slide.offsetLeft - (track.clientWidth - slide.clientWidth) / 2;
+      track.scrollTo({ left, behavior });
+      updateDots();
+    };
+
+    const updateDots = () => {
+      dots.forEach((dot, i) => {
+        const active = i === index;
+        dot.classList.toggle('is-active', active);
+        dot.setAttribute('aria-selected', String(active));
+      });
+    };
+
+    const syncFromScroll = () => {
+      const center = track.scrollLeft + track.clientWidth / 2;
+      let closest = 0;
+      let min = Infinity;
+      slides.forEach((slide, i) => {
+        const slideCenter = slide.offsetLeft + slide.clientWidth / 2;
+        const dist = Math.abs(center - slideCenter);
+        if (dist < min) {
+          min = dist;
+          closest = i;
+        }
+      });
+      if (closest !== index) {
+        index = closest;
+        updateDots();
+      }
+    };
+
+    prev?.addEventListener('click', () => goTo(index - 1));
+    next?.addEventListener('click', () => goTo(index + 1));
+
+    dots.forEach((dot) => {
+      dot.addEventListener('click', () => {
+        const i = Number(dot.dataset.galleryDot);
+        if (!Number.isNaN(i)) goTo(i);
+      });
+    });
+
+    track.addEventListener(
+      'scroll',
+      () => {
+        cancelAnimationFrame(raf);
+        raf = requestAnimationFrame(syncFromScroll);
+      },
+      { passive: true },
+    );
+
+    track.addEventListener('keydown', (event) => {
+      if (event.key === 'ArrowLeft') {
+        event.preventDefault();
+        goTo(index - 1);
+      }
+      if (event.key === 'ArrowRight') {
+        event.preventDefault();
+        goTo(index + 1);
+      }
+    });
+
+    updateDots();
+  }
+
+  function initLightbox() {
+    const lightbox = document.querySelector<HTMLElement>('[data-lightbox]');
+    const img = document.querySelector<HTMLImageElement>('[data-lightbox-img]');
+    const closeBtn = document.querySelector<HTMLButtonElement>('[data-lightbox-close]');
+    const prevBtn = document.querySelector<HTMLButtonElement>('[data-lightbox-prev]');
+    const nextBtn = document.querySelector<HTMLButtonElement>('[data-lightbox-next]');
+    const countEl = document.querySelector<HTMLElement>('[data-lightbox-count]');
+    if (!lightbox || !img || !closeBtn || !prevBtn || !nextBtn || !countEl) return;
+
+    const items: { src: string; alt: string }[] = [];
+    const seen = new Set<string>();
+    document.querySelectorAll<HTMLButtonElement>('[data-lightbox-open]').forEach((btn) => {
+      const src = btn.dataset.lightboxSrc;
+      if (!src || seen.has(src)) return;
+      seen.add(src);
+      items.push({ src, alt: btn.dataset.lightboxAlt || '' });
+    });
+
+    if (items.length === 0) return;
+
+    let index = 0;
+    let lastFocus: HTMLElement | null = null;
+    let touchX = 0;
+
+    const show = (i: number) => {
+      index = (i + items.length) % items.length;
+      const item = items[index];
+      img.src = item.src;
+      img.alt = item.alt;
+      countEl.textContent = `${index + 1} / ${items.length}`;
+    };
+
+    const open = (i: number) => {
+      lastFocus = document.activeElement as HTMLElement | null;
+      show(i);
+      lightbox.hidden = false;
+      document.body.style.overflow = 'hidden';
+      closeBtn.focus();
+    };
+
+    const close = () => {
+      lightbox.hidden = true;
+      img.removeAttribute('src');
+      img.alt = '';
+      countEl.textContent = '';
+      document.body.style.overflow = '';
+      lastFocus?.focus();
+    };
+
+    document.querySelectorAll<HTMLButtonElement>('[data-lightbox-open]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const src = btn.dataset.lightboxSrc;
+        if (!src) return;
+        const i = items.findIndex((item) => item.src === src);
+        if (i >= 0) open(i);
+      });
+    });
+
+    prevBtn.addEventListener('click', (event) => {
+      event.stopPropagation();
+      show(index - 1);
+    });
+
+    nextBtn.addEventListener('click', (event) => {
+      event.stopPropagation();
+      show(index + 1);
+    });
+
+    closeBtn.addEventListener('click', (event) => {
+      event.stopPropagation();
+      close();
+    });
+
+    lightbox.addEventListener('click', (event) => {
+      if (event.target === lightbox) close();
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (lightbox.hidden) return;
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        close();
+      }
+      if (event.key === 'ArrowLeft') {
+        event.preventDefault();
+        show(index - 1);
+      }
+      if (event.key === 'ArrowRight') {
+        event.preventDefault();
+        show(index + 1);
+      }
+    });
+
+    lightbox.addEventListener(
+      'touchstart',
+      (event) => {
+        touchX = event.changedTouches[0]?.clientX ?? 0;
+      },
+      { passive: true },
+    );
+
+    lightbox.addEventListener(
+      'touchend',
+      (event) => {
+        const endX = event.changedTouches[0]?.clientX ?? touchX;
+        const delta = endX - touchX;
+        if (Math.abs(delta) < 50) return;
+        if (delta > 0) show(index - 1);
+        else show(index + 1);
+      },
+      { passive: true },
+    );
+  }
+
+  document
+    .querySelectorAll('[data-gallery-carousel]')
+    .forEach((root) => initGalleryCarousel(root));
+  initLightbox();
+</script>

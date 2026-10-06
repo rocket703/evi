@@ -1,0 +1,16 @@
+/* Lokal gehostete Webfonts (kein Google Fonts CDN) */
+@import '@fontsource/cormorant-garamond/latin-500.css';
+@import '@fontsource/cormorant-garamond/latin-500-italic.css';
+@import '@fontsource/cormorant-garamond/latin-600.css';
+@import '@fontsource/cormorant-garamond/latin-600-italic.css';
+@import '@fontsource/cormorant-garamond/latin-700.css';
+@import '@fontsource/cormorant-garamond/latin-700-italic.css';
+
+@import '@fontsource/lora/latin-500.css';
+@import '@fontsource/lora/latin-600.css';
+@import '@fontsource/lora/latin-700.css';
+
+@import '@fontsource/roboto/latin-400.css';
+@import '@fontsource/roboto/latin-500.css';
+@import '@fontsource/roboto/latin-600.css';
+@import '@fontsource/roboto/latin-700.css';

@@ -1,0 +1,427 @@
+---
+import { site } from '../data/site';
+import { services } from '../data/services';
+
+interface Props {
+  tone?: 'light' | 'warm';
+}
+
+const { tone = 'light' } = Astro.props;
+
+const betreffOptions = [
+  { value: 'Allgemeine Anfrage', slug: '' },
+  ...services.map((service) => ({
+    value: service.title,
+    slug: service.slug,
+  })),
+];
+---
+
+<form
+  id="Form"
+  class:list={['contact-form', { 'contact-form--warm': tone === 'warm' }]}
+  action={`mailto:${site.email}`}
+  method="post"
+  enctype="text/plain"
+>
+  <div class="contact-form__grid">
+    <div class="contact-form__full contact-form__field">
+      <span class="contact-form__label" id="betreff-label">
+        Betreff
+        <span class="contact-form__optional">(optional)</span>
+      </span>
+
+      <div class="fancy-select" data-fancy-select data-service-select>
+        <input
+          type="hidden"
+          name="Betreff"
+          value="Allgemeine Anfrage"
+          data-fancy-value
+        />
+        <button
+          type="button"
+          class="fancy-select__trigger"
+          aria-haspopup="listbox"
+          aria-expanded="false"
+          aria-labelledby="betreff-label betreff-value"
+          data-fancy-trigger
+        >
+          <span id="betreff-value" data-fancy-label>Allgemeine Anfrage</span>
+          <svg
+            class="fancy-select__chevron"
+            viewBox="0 0 24 24"
+            width="16"
+            height="16"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            aria-hidden="true"
+          >
+            <path d="m6 9 6 6 6-6"></path>
+          </svg>
+        </button>
+        <ul class="fancy-select__list" role="listbox" hidden data-fancy-list>
+          {
+            betreffOptions.map((option, i) => (
+              <li
+                class:list={['fancy-select__option', { 'is-active': i === 0 }]}
+                role="option"
+                tabindex="-1"
+                aria-selected={i === 0 ? 'true' : 'false'}
+                data-value={option.value}
+                data-service-slug={option.slug || undefined}
+              >
+                {option.value}
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
+
+    <label>
+      Name
+      <input type="text" name="Name" required autocomplete="name" />
+    </label>
+    <label>
+      E-Mail
+      <input type="email" name="E-Mail" required autocomplete="email" />
+    </label>
+    <label>
+      Telefon
+      <input type="tel" name="Telefon" autocomplete="tel" />
+    </label>
+    <label>
+      Wunschtermin
+      <input type="text" name="Wunschtermin" placeholder="z. B. Freitag Nachmittag" />
+    </label>
+    <label class="contact-form__full">
+      Nachricht
+      <textarea name="Nachricht" rows="5" required></textarea>
+    </label>
+  </div>
+
+  <button class="btn btn--accent" type="submit">Nachricht senden</button>
+</form>
+
+<style>
+  .contact-form {
+    max-width: 40rem;
+    margin: 0 auto;
+    padding: 0;
+  }
+
+  .contact-form__grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+
+  .contact-form label,
+  .contact-form__field {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    column-gap: 0.4rem;
+    align-items: baseline;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--color-ink);
+  }
+
+  .contact-form label > :is(input, textarea),
+  .contact-form__field > .fancy-select {
+    grid-column: 1 / -1;
+    margin-top: 0.4rem;
+  }
+
+  .contact-form__label {
+    display: contents;
+  }
+
+  .contact-form__optional {
+    font-weight: 400;
+    font-size: 0.8rem;
+    color: var(--color-muted);
+  }
+
+  .contact-form__full {
+    grid-column: 1 / -1;
+  }
+
+  .contact-form input,
+  .contact-form textarea {
+    width: 100%;
+    border: 1px solid var(--color-border);
+    border-radius: 0.65rem;
+    padding: 0.7rem 0.85rem;
+    font: inherit;
+    color: var(--color-ink);
+    background: #fff;
+  }
+
+  .contact-form input:focus,
+  .contact-form textarea:focus {
+    outline: 2px solid var(--color-green);
+    outline-offset: 1px;
+    border-color: transparent;
+  }
+
+  .fancy-select {
+    position: relative;
+  }
+
+  .fancy-select__trigger {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    width: 100%;
+    border: 1px solid var(--color-border);
+    border-radius: 0.65rem;
+    padding: 0.7rem 0.85rem;
+    font: inherit;
+    font-weight: 400;
+    color: var(--color-ink);
+    background: #fff;
+    text-align: left;
+    cursor: pointer;
+  }
+
+  .fancy-select__trigger:focus-visible {
+    outline: 2px solid var(--color-green);
+    outline-offset: 1px;
+    border-color: transparent;
+  }
+
+  .fancy-select__chevron {
+    flex-shrink: 0;
+    color: var(--color-green-dark);
+    transition: transform 0.2s ease;
+  }
+
+  .fancy-select.is-open .fancy-select__chevron {
+    transform: rotate(180deg);
+  }
+
+  .fancy-select__list {
+    position: absolute;
+    z-index: 5;
+    top: calc(100% + 0.35rem);
+    left: 0;
+    right: 0;
+    margin: 0;
+    padding: 0.35rem;
+    list-style: none;
+    border: 1px solid color-mix(in srgb, var(--color-green-dark) 14%, transparent);
+    border-radius: 0.75rem;
+    background: #fff;
+    box-shadow: 0 14px 32px rgba(20, 38, 26, 0.12);
+    max-height: 16rem;
+    overflow-y: auto;
+  }
+
+  .fancy-select__option {
+    padding: 0.7rem 0.85rem;
+    border-radius: 0.5rem;
+    color: var(--color-ink);
+    cursor: pointer;
+    font-weight: 400;
+  }
+
+  .fancy-select__option:hover,
+  .fancy-select__option:focus-visible {
+    outline: none;
+    background: color-mix(in srgb, var(--color-green) 12%, white);
+    color: var(--color-green-dark);
+  }
+
+  .fancy-select__option.is-active {
+    background: color-mix(in srgb, var(--color-accent) 22%, white);
+    color: #14261a;
+  }
+
+  .contact-form .btn {
+    display: flex;
+    width: fit-content;
+    margin: 1.35rem auto 0;
+  }
+
+  .contact-form--warm label,
+  .contact-form--warm .contact-form__field {
+    color: #f4ece4;
+  }
+
+  .contact-form--warm .contact-form__optional {
+    color: rgba(244, 236, 228, 0.65);
+  }
+
+  .contact-form--warm input,
+  .contact-form--warm textarea {
+    color: #f4ece4;
+    background-color: rgba(244, 236, 228, 0.08);
+    border-color: rgba(244, 236, 228, 0.35);
+  }
+
+  .contact-form--warm input::placeholder,
+  .contact-form--warm textarea::placeholder {
+    color: rgba(244, 236, 228, 0.45);
+  }
+
+  .contact-form--warm input:focus,
+  .contact-form--warm textarea:focus {
+    outline-color: var(--color-accent);
+    background-color: rgba(244, 236, 228, 0.12);
+  }
+
+  .contact-form--warm .fancy-select__trigger {
+    color: #f4ece4;
+    background-color: rgba(244, 236, 228, 0.08);
+    border-color: rgba(244, 236, 228, 0.35);
+  }
+
+  .contact-form--warm .fancy-select__trigger:focus-visible {
+    outline-color: var(--color-accent);
+    background-color: rgba(244, 236, 228, 0.12);
+  }
+
+  .contact-form--warm .fancy-select__chevron {
+    color: var(--color-accent);
+  }
+
+  .contact-form--warm .fancy-select__list {
+    border-color: rgba(244, 236, 228, 0.18);
+    background: #2c211c;
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
+  }
+
+  .contact-form--warm .fancy-select__option {
+    color: #f4ece4;
+  }
+
+  .contact-form--warm .fancy-select__option:hover,
+  .contact-form--warm .fancy-select__option:focus-visible {
+    background: rgba(244, 236, 228, 0.1);
+    color: #fff;
+  }
+
+  .contact-form--warm .fancy-select__option.is-active {
+    background: color-mix(in srgb, var(--color-accent) 28%, #2c211c);
+    color: #fff;
+  }
+
+  .contact-form--warm :global(.btn--accent) {
+    background: var(--color-accent);
+    color: #14261a;
+  }
+
+  .contact-form--warm :global(.btn--accent:hover) {
+    background: #d4b03a;
+    color: #14261a;
+  }
+
+  @media (max-width: 640px) {
+    .contact-form__grid {
+      grid-template-columns: 1fr;
+    }
+
+    .contact-form .btn {
+      width: 100%;
+    }
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-fancy-select]').forEach((root) => {
+    const trigger = root.querySelector<HTMLButtonElement>('[data-fancy-trigger]');
+    const list = root.querySelector<HTMLElement>('[data-fancy-list]');
+    const label = root.querySelector<HTMLElement>('[data-fancy-label]');
+    const hidden = root.querySelector<HTMLInputElement>('[data-fancy-value]');
+    const options = [...root.querySelectorAll<HTMLElement>('[role="option"]')];
+
+    if (!trigger || !list || !label || !hidden || options.length === 0) return;
+
+    const setValue = (option: HTMLElement) => {
+      const value = option.dataset.value ?? '';
+      hidden.value = value;
+      label.textContent = value;
+      options.forEach((item) => {
+        const active = item === option;
+        item.classList.toggle('is-active', active);
+        item.setAttribute('aria-selected', String(active));
+      });
+    };
+
+    const close = () => {
+      root.classList.remove('is-open');
+      trigger.setAttribute('aria-expanded', 'false');
+      list.hidden = true;
+    };
+
+    const open = () => {
+      root.classList.add('is-open');
+      trigger.setAttribute('aria-expanded', 'true');
+      list.hidden = false;
+      const active =
+        options.find((item) => item.classList.contains('is-active')) ?? options[0];
+      active.focus();
+    };
+
+    const slug = new URLSearchParams(window.location.search).get('service');
+    if (slug) {
+      const match = options.find((item) => item.dataset.serviceSlug === slug);
+      if (match) setValue(match);
+    }
+
+    trigger.addEventListener('click', () => {
+      if (list.hidden) open();
+      else close();
+    });
+
+    options.forEach((option) => {
+      option.addEventListener('click', () => {
+        setValue(option);
+        close();
+        trigger.focus();
+      });
+
+      option.addEventListener('keydown', (event) => {
+        const index = options.indexOf(option);
+        if (event.key === 'ArrowDown') {
+          event.preventDefault();
+          options[Math.min(index + 1, options.length - 1)]?.focus();
+        } else if (event.key === 'ArrowUp') {
+          event.preventDefault();
+          options[Math.max(index - 1, 0)]?.focus();
+        } else if (event.key === 'Home') {
+          event.preventDefault();
+          options[0]?.focus();
+        } else if (event.key === 'End') {
+          event.preventDefault();
+          options[options.length - 1]?.focus();
+        } else if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          setValue(option);
+          close();
+          trigger.focus();
+        } else if (event.key === 'Escape') {
+          event.preventDefault();
+          close();
+          trigger.focus();
+        }
+      });
+    });
+
+    document.addEventListener('click', (event) => {
+      if (!root.contains(event.target as Node)) close();
+    });
+
+    trigger.addEventListener('keydown', (event) => {
+      if (event.key === 'ArrowDown' || event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        if (list.hidden) open();
+      } else if (event.key === 'Escape') {
+        close();
+      }
+    });
+  });
+</script>

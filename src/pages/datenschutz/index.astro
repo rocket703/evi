@@ -1,0 +1,349 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { site } from '../../data/site';
+import { seoPages } from '../../data/seo';
+---
+
+<BaseLayout
+  title="Datenschutz"
+  pageTitle={seoPages.datenschutz.title}
+  description={seoPages.datenschutz.description}
+>
+  <section class="section">
+    <div class="container legal">
+      <h1>Datenschutz</h1>
+      <span class="section__flourish" aria-hidden="true">S</span>
+
+      <p class="legal__lead">
+        Die folgenden Hinweise informieren Sie darüber, was mit Ihren
+        personenbezogenen Daten passiert, wenn Sie diese Website besuchen.
+      </p>
+
+      <h2>1. Datenschutz auf einen Blick</h2>
+      <h3>Allgemeine Hinweise</h3>
+      <p>
+        Personenbezogene Daten sind alle Daten, mit denen Sie persönlich
+        identifiziert werden können. Ausführliche Informationen zum Thema
+        Datenschutz entnehmen Sie den folgenden Abschnitten dieser
+        Datenschutzerklärung.
+      </p>
+
+      <h3>Datenerfassung auf dieser Website</h3>
+      <p>
+        <strong>Wer ist verantwortlich für die Datenerfassung?</strong><br />
+        Die Datenverarbeitung auf dieser Website erfolgt durch den
+        Websitebetreiber. Kontaktdaten finden Sie unten unter „Verantwortliche
+        Stelle“.
+      </p>
+      <p>
+        <strong>Wie erfassen wir Ihre Daten?</strong><br />
+        Ihre Daten werden zum einen dadurch erhoben, dass Sie uns diese
+        mitteilen – etwa per Kontaktformular, E-Mail oder Telefon. Andere Daten
+        können beim Besuch der Website technisch erfasst werden (z.&nbsp;B.
+        Server-Logfiles).
+      </p>
+      <p>
+        <strong>Wofür nutzen wir Ihre Daten?</strong><br />
+        Ein Teil der Daten wird erhoben, um eine fehlerfreie Bereitstellung der
+        Website zu gewährleisten. Andere Daten dienen der Bearbeitung Ihrer
+        Anfragen (z.&nbsp;B. Terminanfragen).
+      </p>
+      <p>
+        <strong>Welche Rechte haben Sie?</strong><br />
+        Sie haben jederzeit das Recht auf unentgeltliche Auskunft über Herkunft,
+        Empfänger und Zweck Ihrer gespeicherten personenbezogenen Daten. Sie
+        haben außerdem ein Recht auf Berichtigung oder Löschung, auf
+        Einschränkung der Verarbeitung sowie ein Beschwerderecht bei der
+        zuständigen Aufsichtsbehörde. Hierzu sowie zu weiteren Fragen zum
+        Datenschutz können Sie sich jederzeit an uns wenden.
+      </p>
+
+      <h2>2. Hosting</h2>
+      <p>
+        Diese Website wird als statische Website bereitgestellt. Beim Aufruf der
+        Seiten können technisch notwendige Verbindungsdaten (insbesondere
+        IP-Adresse, Zeitpunkt des Zugriffs, aufgerufene Datei, Browsertyp und
+        Betriebssystem) in Server-Logfiles verarbeitet werden. Die Verarbeitung
+        erfolgt auf Grundlage von Art.&nbsp;6 Abs.&nbsp;1 lit.&nbsp;f DSGVO aus
+        berechtigtem Interesse an einer sicheren und stabilen Bereitstellung der
+        Website.
+      </p>
+      <p>
+        Soweit ein externer Hosting-Anbieter eingesetzt wird, verarbeitet dieser
+        die genannten Daten in unserem Auftrag. Mit dem Anbieter wird – soweit
+        erforderlich – ein Vertrag zur Auftragsverarbeitung geschlossen.
+      </p>
+
+      <h2>3. Allgemeine Hinweise und Pflichtinformationen</h2>
+      <h3>Datenschutz</h3>
+      <p>
+        Die Betreiber dieser Seiten nehmen den Schutz Ihrer persönlichen Daten
+        sehr ernst. Wir behandeln Ihre personenbezogenen Daten vertraulich und
+        entsprechend den gesetzlichen Datenschutzvorschriften sowie dieser
+        Datenschutzerklärung.
+      </p>
+      <p>
+        Wir weisen darauf hin, dass die Datenübertragung im Internet
+        (z.&nbsp;B. bei der Kommunikation per E-Mail) Sicherheitslücken
+        aufweisen kann. Ein lückenloser Schutz der Daten vor dem Zugriff durch
+        Dritte ist nicht möglich.
+      </p>
+
+      <h3>Verantwortliche Stelle</h3>
+      <p>
+        Die verantwortliche Stelle für die Datenverarbeitung auf dieser Website
+        ist:
+      </p>
+      <p>
+        <strong>Atelier Haarkunst</strong><br />
+        Inhaberin: {site.owner}<br />
+        {site.address.street}<br />
+        {site.address.zip} {site.address.city}<br />
+        Telefon: <a href={site.phoneHref}>{site.phone}</a><br />
+        E-Mail: <a href={`mailto:${site.email}`}>{site.email}</a>
+      </p>
+      <p>
+        Verantwortliche Stelle ist die natürliche oder juristische Person, die
+        allein oder gemeinsam mit anderen über die Zwecke und Mittel der
+        Verarbeitung von personenbezogenen Daten entscheidet.
+      </p>
+
+      <h3>Speicherdauer</h3>
+      <p>
+        Soweit innerhalb dieser Datenschutzerklärung keine speziellere
+        Speicherdauer genannt wurde, verbleiben Ihre personenbezogenen Daten bei
+        uns, bis der Zweck für die Datenverarbeitung entfällt. Wenn Sie ein
+        berechtigtes Löschersuchen geltend machen oder eine Einwilligung
+        widerrufen, werden Ihre Daten gelöscht, sofern wir keine anderen
+        rechtlich zulässigen Gründe für die Speicherung haben (z.&nbsp;B.
+        steuer- oder handelsrechtliche Aufbewahrungsfristen).
+      </p>
+
+      <h3>Rechtsgrundlagen</h3>
+      <p>
+        Sofern Sie in die Datenverarbeitung eingewilligt haben, verarbeiten wir
+        Ihre personenbezogenen Daten auf Grundlage von Art.&nbsp;6 Abs.&nbsp;1
+        lit.&nbsp;a DSGVO. Sind Ihre Daten zur Vertragserfüllung oder zur
+        Durchführung vorvertraglicher Maßnahmen erforderlich, verarbeiten wir
+        sie auf Grundlage von Art.&nbsp;6 Abs.&nbsp;1 lit.&nbsp;b DSGVO. Des
+        Weiteren verarbeiten wir Daten, sofern dies zur Erfüllung einer
+        rechtlichen Verpflichtung erforderlich ist (Art.&nbsp;6 Abs.&nbsp;1
+        lit.&nbsp;c DSGVO) oder auf Grundlage unseres berechtigten Interesses
+        (Art.&nbsp;6 Abs.&nbsp;1 lit.&nbsp;f DSGVO).
+      </p>
+
+      <h3>Widerruf Ihrer Einwilligung</h3>
+      <p>
+        Viele Datenverarbeitungsvorgänge sind nur mit Ihrer ausdrücklichen
+        Einwilligung möglich. Sie können eine bereits erteilte Einwilligung
+        jederzeit widerrufen. Die Rechtmäßigkeit der bis zum Widerruf erfolgten
+        Verarbeitung bleibt vom Widerruf unberührt.
+      </p>
+
+      <h3>Widerspruchsrecht (Art.&nbsp;21 DSGVO)</h3>
+      <p>
+        Wenn die Datenverarbeitung auf Grundlage von Art.&nbsp;6 Abs.&nbsp;1
+        lit.&nbsp;e oder f DSGVO erfolgt, haben Sie jederzeit das Recht, aus
+        Gründen, die sich aus Ihrer besonderen Situation ergeben, Widerspruch
+        gegen die Verarbeitung einzulegen. Werden Ihre personenbezogenen Daten
+        verarbeitet, um Direktwerbung zu betreiben, können Sie dem jederzeit
+        widersprechen.
+      </p>
+
+      <h3>Beschwerderecht bei der Aufsichtsbehörde</h3>
+      <p>
+        Im Falle von Verstößen gegen die DSGVO steht Betroffenen ein
+        Beschwerderecht bei einer Aufsichtsbehörde zu – insbesondere in dem
+        Mitgliedstaat ihres gewöhnlichen Aufenthalts, ihres Arbeitsplatzes oder
+        des Orts des mutmaßlichen Verstoßes.
+      </p>
+      <p>
+        Für Sachsen-Anhalt ist zuständig:<br />
+        Landesbeauftragte für den Datenschutz Sachsen-Anhalt<br />
+        Leiterstraße 9, 39104 Magdeburg
+      </p>
+
+      <h3>Recht auf Datenübertragbarkeit, Auskunft, Berichtigung, Löschung</h3>
+      <p>
+        Sie haben das Recht, Daten, die wir auf Grundlage Ihrer Einwilligung
+        oder in Erfüllung eines Vertrags automatisiert verarbeiten, in einem
+        gängigen, maschinenlesbaren Format aushändigen zu lassen. Außerdem
+        haben Sie im Rahmen der geltenden Bestimmungen jederzeit das Recht auf
+        unentgeltliche Auskunft, Berichtigung oder Löschung Ihrer bei uns
+        gespeicherten personenbezogenen Daten sowie auf Einschränkung der
+        Verarbeitung.
+      </p>
+
+      <h3>SSL- bzw. TLS-Verschlüsselung</h3>
+      <p>
+        Diese Seite nutzt aus Sicherheitsgründen eine SSL- bzw.
+        TLS-Verschlüsselung. Eine verschlüsselte Verbindung erkennen Sie am
+        Schloss-Symbol und daran, dass die Adresszeile von „http://“ auf
+        „https://“ wechselt.
+      </p>
+
+      <h3>Widerspruch gegen Werbe-E-Mails</h3>
+      <p>
+        Der Nutzung von im Rahmen der Impressumspflicht veröffentlichten
+        Kontaktdaten zur Übersendung von nicht ausdrücklich angeforderter
+        Werbung wird hiermit widersprochen. Die Betreiber der Seiten behalten
+        sich rechtliche Schritte im Falle unverlangter Zusendung von
+        Werbeinformationen vor.
+      </p>
+
+      <h2>4. Datenerfassung auf dieser Website</h2>
+      <h3>Server-Logfiles</h3>
+      <p>
+        Der Provider der Seiten erhebt und speichert automatisch Informationen
+        in sogenannten Server-Logfiles, die Ihr Browser automatisch übermittelt.
+        Dies sind insbesondere:
+      </p>
+      <ul>
+        <li>Browsertyp und Browserversion</li>
+        <li>verwendetes Betriebssystem</li>
+        <li>Referrer-URL</li>
+        <li>Hostname des zugreifenden Rechners</li>
+        <li>Uhrzeit der Serveranfrage</li>
+        <li>IP-Adresse</li>
+      </ul>
+      <p>
+        Eine Zusammenführung dieser Daten mit anderen Datenquellen wird nicht
+        vorgenommen. Die Erfassung erfolgt auf Grundlage von Art.&nbsp;6
+        Abs.&nbsp;1 lit.&nbsp;f DSGVO.
+      </p>
+
+      <h3>Kontaktformular</h3>
+      <p>
+        Wenn Sie uns über das Kontaktformular schreiben, öffnet sich in der
+        Regel Ihr lokales E-Mail-Programm (mailto). Die von Ihnen eingegebenen
+        Angaben (z.&nbsp;B. Name, E-Mail, Telefon, Wunschtermin, Nachricht)
+        werden dabei nicht auf unserem Webserver gespeichert, sondern über Ihr
+        E-Mail-Programm an uns übermittelt.
+      </p>
+      <p>
+        Die anschließende Verarbeitung Ihrer Anfrage erfolgt auf Grundlage von
+        Art.&nbsp;6 Abs.&nbsp;1 lit.&nbsp;b DSGVO, sofern sie mit der Erfüllung
+        eines Vertrags zusammenhängt oder zur Durchführung vorvertraglicher
+        Maßnahmen erforderlich ist. In übrigen Fällen beruht die Verarbeitung
+        auf unserem berechtigten Interesse an der effektiven Bearbeitung Ihrer
+        Anfrage (Art.&nbsp;6 Abs.&nbsp;1 lit.&nbsp;f DSGVO).
+      </p>
+      <p>
+        Die übersandten Daten verbleiben bei uns, bis Sie uns zur Löschung
+        auffordern, der Zweck entfällt oder gesetzliche Aufbewahrungsfristen
+        entgegenstehen.
+      </p>
+
+      <h3>Anfrage per E-Mail und Telefon</h3>
+      <p>
+        Wenn Sie uns per E-Mail oder Telefon kontaktieren, wird Ihre Anfrage
+        inklusive der daraus hervorgehenden personenbezogenen Daten zum Zwecke
+        der Bearbeitung gespeichert und verarbeitet. Diese Daten geben wir nicht
+        ohne Ihre Einwilligung weiter. Rechtsgrundlagen entsprechen den Angaben
+        zum Kontaktformular.
+      </p>
+
+      <h3>Cookies und Analyse-Tools</h3>
+      <p>
+        Diese Website verwendet keine Tracking-Cookies und keine
+        Webanalyse-Dienste wie Google Analytics. Es werden keine Profile über
+        Ihr Nutzungsverhalten erstellt.
+      </p>
+
+      <h2>5. Soziale Medien und externe Links</h2>
+      <p>
+        Auf dieser Website finden Sie Links zu Instagram, Facebook und Google
+        Maps. Beim Anklicken dieser Links verlassen Sie unsere Website. Für die
+        dortige Datenverarbeitung sind die jeweiligen Anbieter verantwortlich.
+        Weitere Informationen finden Sie in den Datenschutzerklärungen der
+        jeweiligen Dienste.
+      </p>
+      <ul>
+        <li>
+          Instagram / Meta:
+          <a
+            href="https://privacycenter.instagram.com/policy/"
+            target="_blank"
+            rel="noopener noreferrer">privacycenter.instagram.com</a
+          >
+        </li>
+        <li>
+          Facebook / Meta:
+          <a
+            href="https://www.facebook.com/privacy/policy/"
+            target="_blank"
+            rel="noopener noreferrer">facebook.com/privacy</a
+          >
+        </li>
+        <li>
+          Google Maps:
+          <a
+            href="https://policies.google.com/privacy"
+            target="_blank"
+            rel="noopener noreferrer">policies.google.com/privacy</a
+          >
+        </li>
+      </ul>
+
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .legal {
+    max-width: 46rem;
+    background: var(--color-white);
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-card);
+    padding: clamp(1.5rem, 4vw, 2.5rem);
+  }
+
+  .legal h1 {
+    margin-bottom: 0.35rem;
+    text-align: center;
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: 600;
+    color: var(--color-green-dark);
+  }
+
+  .legal .section__flourish {
+    margin: 0.35rem auto 1.25rem;
+  }
+
+  .legal__lead {
+    color: var(--color-muted);
+    font-size: 0.95rem;
+    text-align: center;
+  }
+
+  .legal h2 {
+    margin-top: 2.25rem;
+    font-family: var(--font-sans);
+    font-style: normal;
+    font-size: 1.2rem;
+  }
+
+  .legal h3 {
+    margin-top: 1.35rem;
+    margin-bottom: 0.5rem;
+    font-family: var(--font-sans);
+    font-style: normal;
+    font-size: 1.05rem;
+    color: var(--color-ink);
+  }
+
+  .legal ul {
+    margin: 0 0 1rem 1.1rem;
+    padding: 0;
+    list-style: disc;
+  }
+
+  .legal li {
+    margin-bottom: 0.35rem;
+  }
+
+  .legal p:last-child {
+    margin-bottom: 0;
+  }
+</style>

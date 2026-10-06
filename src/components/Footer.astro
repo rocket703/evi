@@ -1,0 +1,76 @@
+---
+import { site } from '../data/site';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="footer">
+  <div class="footer__bar">
+    <div class="footer__bar-inner container">
+      <p>
+        Copyright © {year}
+        {site.name} — Webdesign:
+        <a href={site.designer.url} target="_blank" rel="noopener noreferrer">
+          {site.designer.name}
+        </a>
+      </p>
+      <nav class="footer__legal" aria-label="Rechtliches">
+        <a href="/impressum/">Impressum</a>
+        <a href="/datenschutz/">Datenschutz</a>
+      </nav>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    margin-top: 0;
+  }
+
+  .footer__bar {
+    border-top: 1px solid color-mix(in srgb, var(--color-green-dark) 12%, transparent);
+    background: color-mix(in srgb, var(--color-bg) 70%, white);
+  }
+
+  .footer__bar-inner {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.75rem 1.5rem;
+    padding: 1rem 0;
+    font-size: 0.875rem;
+    color: var(--color-muted);
+  }
+
+  .footer__bar-inner p {
+    margin: 0;
+  }
+
+  .footer__legal {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.85rem 1.25rem;
+  }
+
+  .footer__bar-inner a {
+    color: var(--color-muted);
+    text-decoration: none;
+  }
+
+  .footer__bar-inner a:hover {
+    color: var(--color-green-dark);
+  }
+
+  @media (max-width: 640px) {
+    .footer__bar-inner {
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 1rem 0 1.25rem;
+    }
+
+    .footer__legal {
+      justify-content: center;
+    }
+  }
+</style>

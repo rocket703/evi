@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 52" fill="#000" aria-hidden="true">
+  <!-- Endspitzen -->
+  <path d="M6 26 L14 21.5 V30.5 Z" />
+  <path d="M314 26 L306 21.5 V30.5 Z" />
+
+  <!-- Seitliche Linien -->
+  <rect x="14" y="25.15" width="78" height="1.7" rx="0.85" />
+  <rect x="228" y="25.15" width="78" height="1.7" rx="0.85" />
+
+  <!-- Linker Schwung -->
+  <path
+    fill="none"
+    stroke="#000"
+    stroke-width="1.9"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    d="M100 30.5
+       C108 38, 124 38.5, 134 30
+       C140 24.5, 139 17.5, 131 15
+       C125 13, 118 15.5, 116 21"
+  />
+
+  <!-- Rechte Raute -->
+  <path d="M160 13 L173 26 L160 39 L147 26 Z" />
+
+  <!-- Rechter Schwung -->
+  <path
+    fill="none"
+    stroke="#000"
+    stroke-width="1.9"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    d="M220 30.5
+       C212 38, 196 38.5, 186 30
+       C180 24.5, 181 17.5, 189 15
+       C195 13, 202 15.5, 204 21"
+  />
+</svg>

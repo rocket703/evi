@@ -1,0 +1,248 @@
+---
+import { reviews } from '../data/reviews';
+import { site } from '../data/site';
+---
+
+<section class="reviews section" aria-labelledby="reviews-heading">
+  <div class="reviews__wood" aria-hidden="true"></div>
+  <div class="container reviews__content">
+    <div class="section__intro">
+      <h2 id="reviews-heading">Das sagen meine Kundinnen</h2>
+      <p>Echte Stimmen von Google – 5,0 Sterne für Atelier Haarkunst.</p>
+    </div>
+
+    <div class="reviews__pager" data-scroll-pager>
+      <ul class="reviews__list" data-scroll-track>
+        {
+          reviews.map((review) => (
+            <li class="reviews__item" data-scroll-slide>
+              <p class="reviews__stars" aria-label={`${review.rating} von 5 Sternen`}>
+                {'★'.repeat(review.rating)}
+              </p>
+              <blockquote class="reviews__quote">
+                <p>„{review.quote}“</p>
+                <footer>
+                  <cite>{review.author}</cite>
+                  <span>Google-Bewertung</span>
+                </footer>
+              </blockquote>
+            </li>
+          ))
+        }
+      </ul>
+
+      <div class="reviews__dots" role="tablist" aria-label="Bewertungen durchblättern">
+        {
+          reviews.map((_, i) => (
+            <button
+              type="button"
+              class:list={['reviews__dot', { 'is-active': i === 0 }]}
+              role="tab"
+              aria-label={`Bewertung ${i + 1}`}
+              aria-current={i === 0 ? 'true' : undefined}
+              data-scroll-dot={i}
+            />
+          ))
+        }
+      </div>
+    </div>
+
+    <p class="reviews__more">
+      <a href={site.address.mapsUrl} target="_blank" rel="noopener noreferrer">
+        Alle Bewertungen auf Google ansehen
+      </a>
+    </p>
+  </div>
+</section>
+
+<style>
+  .reviews {
+    --reviews-brown: #2c211c;
+    --reviews-brown-mid: #3d2d24;
+    --reviews-cream: #f4ece4;
+    --reviews-cream-muted: rgba(244, 236, 228, 0.78);
+
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+    color: var(--reviews-cream);
+    background: var(--reviews-brown);
+  }
+
+  /* Bild wieder sichtbar – ohne CSS-filter (das hat geruckelt) */
+  .reviews__wood {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background-image: url('/images/reviews-bg.webp');
+    background-size: cover;
+    background-position: 40% center;
+    opacity: 0.28;
+    pointer-events: none;
+  }
+
+  .reviews__wood::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(
+        160deg,
+        rgba(61, 45, 36, 0.82) 0%,
+        rgba(44, 33, 28, 0.88) 45%,
+        rgba(36, 26, 22, 0.92) 100%
+      );
+  }
+
+  .reviews__content {
+    position: relative;
+    z-index: 1;
+  }
+
+  .reviews :global(.section__intro h2) {
+    color: var(--reviews-cream);
+  }
+
+  .reviews :global(.section__intro p) {
+    color: var(--reviews-cream-muted);
+  }
+
+  .reviews :global(.section__intro h2::after) {
+    background-color: var(--color-accent);
+  }
+
+  .reviews__list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .reviews__item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+    padding: 1.35rem 1.25rem 1.4rem;
+    background: rgba(244, 236, 228, 0.08);
+    border: 1px solid rgba(244, 236, 228, 0.14);
+    border-radius: var(--radius-card);
+  }
+
+  .reviews__stars {
+    margin: 0;
+    color: var(--color-accent);
+    font-size: 1rem;
+    letter-spacing: 0.08em;
+    line-height: 1;
+  }
+
+  .reviews__quote {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+    flex: 1;
+  }
+
+  .reviews__quote p {
+    margin: 0;
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: clamp(1.1rem, 2vw, 1.28rem);
+    font-weight: 500;
+    line-height: 1.45;
+    color: var(--reviews-cream);
+    text-wrap: pretty;
+  }
+
+  .reviews__quote footer {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    margin-top: auto;
+  }
+
+  .reviews__quote cite {
+    font-style: normal;
+    font-weight: 600;
+    font-size: 0.92rem;
+    color: var(--reviews-cream);
+  }
+
+  .reviews__quote footer span {
+    font-size: 0.8rem;
+    color: var(--reviews-cream-muted);
+  }
+
+  .reviews__more {
+    margin: 1.5rem 0 0;
+    text-align: center;
+  }
+
+  .reviews__more a {
+    font-weight: 500;
+    color: var(--color-accent);
+  }
+
+  .reviews__more a:hover {
+    color: #d4b03a;
+  }
+
+  .reviews__dots {
+    display: none;
+  }
+
+  @media (max-width: 900px) {
+    .reviews__list {
+      display: flex;
+      gap: 1rem;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      overscroll-behavior-x: contain;
+      scrollbar-width: none;
+      margin-inline: calc(-1 * clamp(0.75rem, 4vw, 1.25rem));
+      padding: 0.15rem clamp(1rem, 5vw, 1.5rem) 0.35rem;
+    }
+
+    .reviews__list::-webkit-scrollbar {
+      display: none;
+    }
+
+    .reviews__item {
+      flex: 0 0 min(82vw, 20rem);
+      scroll-snap-align: center;
+    }
+
+    .reviews__dots {
+      display: flex;
+      justify-content: center;
+      gap: 0.4rem;
+      margin-top: 0.85rem;
+    }
+
+    .reviews__dot {
+      width: 0.5rem;
+      height: 0.5rem;
+      padding: 0;
+      border: 0;
+      border-radius: 999px;
+      background: rgba(244, 236, 228, 0.35);
+      cursor: pointer;
+      transition: width 0.2s ease, background 0.2s ease;
+    }
+
+    .reviews__dot.is-active {
+      width: 1.25rem;
+      background: var(--color-accent);
+    }
+  }
+</style>
+
+<script>
+  import { initScrollPager } from '../scripts/scrollPager';
+
+  document.querySelectorAll('.reviews').forEach((root) => initScrollPager(root));
+</script>

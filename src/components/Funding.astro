@@ -1,0 +1,67 @@
+---
+import { site } from '../data/site';
+---
+
+<section class="funding section" id="foerderung" aria-labelledby="funding-heading">
+  <div class="container funding__inner">
+    <img
+      class="funding__badge"
+      src={site.funding.wappen}
+      alt="Wappen des Landes Sachsen-Anhalt"
+      width="120"
+      height="120"
+      loading="lazy"
+      decoding="async"
+    />
+    <div>
+      <h2 id="funding-heading" class="funding__title">Sachsen – Anhalt</h2>
+      <span class="section__flourish" aria-hidden="true">S</span>
+      <p>{site.funding.note}</p>
+      <a class="funding__pdf" href={site.funding.pdfHref}>
+        Plakat zur Förderung als PDF
+      </a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .funding__inner {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 1.25rem;
+    align-items: center;
+  }
+
+  .funding__badge {
+    width: 5.5rem;
+    height: 5.5rem;
+    object-fit: contain;
+    display: block;
+  }
+
+  .funding__title {
+    margin: 0 0 0.55rem;
+    font-size: clamp(1.55rem, 2.8vw, 1.9rem);
+    color: var(--color-green-dark);
+  }
+
+  .funding__inner p {
+    margin: 0 0 0.5rem;
+  }
+
+  .funding__pdf {
+    font-weight: 500;
+  }
+
+  @media (max-width: 640px) {
+    .funding__inner {
+      grid-template-columns: 1fr;
+      text-align: center;
+      justify-items: center;
+    }
+
+    .funding__inner .section__flourish {
+      margin-inline: auto;
+    }
+  }
+</style>

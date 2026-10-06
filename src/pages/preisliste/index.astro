@@ -1,0 +1,283 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Hero from '../../components/Hero.astro';
+import { priceCategories, priceDisclaimer } from '../../data/prices';
+import { seoPages } from '../../data/seo';
+---
+
+<BaseLayout
+  title="Preisliste"
+  pageTitle={seoPages.preisliste.title}
+  description={seoPages.preisliste.description}
+>
+  <Hero />
+
+  <section class="section price-page" aria-labelledby="price-page-heading">
+    <div class="container">
+      <div class="section__intro">
+        <h2 id="price-page-heading">Klar, fair und nachvollziehbar</h2>
+        <p>
+          Schöne Haare sind Ausdruck von Persönlichkeit. Hier findest du alle
+          Leistungen im Überblick – individuell nach Aufwand und Haarlänge.
+        </p>
+      </div>
+
+      <nav class="price-page__nav" aria-label="Preiskategorien">
+        {
+          priceCategories.map((cat) => (
+            <a href={`#${cat.id}`}>{cat.title}</a>
+          ))
+        }
+      </nav>
+
+      <div class="price-page__list">
+        {
+          priceCategories.map((cat) => (
+            <article class="price-page__block" id={cat.id}>
+              <header class="price-page__head">
+                <h3>{cat.title}</h3>
+                <span class="section__flourish" aria-hidden="true">S</span>
+              </header>
+
+              <ul class="price-page__rows">
+                {cat.rows.map((row) => (
+                  <li>
+                    <span class="price-page__name">{row.name}</span>
+                    <span class="price-page__dots" aria-hidden="true"></span>
+                    {row.prices && (
+                      <span class="price-page__value">{row.prices}</span>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="price-page__cta section" aria-label="Hinweis und Termin">
+    <div class="container price-page__notes">
+      {priceDisclaimer.map((line) => <p>{line}</p>)}
+      <p>Bei Fragen meldet euch gerne bei mir.</p>
+      <a class="btn btn--accent" href="/kontakt/#Form">Jetzt Termin anfragen</a>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .price-page__nav {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.35rem 1.25rem;
+    margin: 0 auto 2.5rem;
+    max-width: 44rem;
+    border-bottom: 1px solid color-mix(in srgb, var(--color-green-dark) 14%, transparent);
+  }
+
+  .price-page__nav a {
+    position: relative;
+    color: var(--color-muted);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.95rem;
+    padding: 0.7rem 0.15rem 0.85rem;
+    white-space: nowrap;
+    transition: color 0.2s ease;
+  }
+
+  .price-page__nav a::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -1px;
+    height: 2px;
+    background: var(--color-accent);
+    transform: scaleX(0);
+    transition: transform 0.25s ease;
+  }
+
+  .price-page__nav a:hover,
+  .price-page__nav a:focus-visible {
+    color: var(--color-green-dark);
+  }
+
+  .price-page__nav a:hover::after,
+  .price-page__nav a:focus-visible::after {
+    transform: scaleX(1);
+  }
+
+  .price-page__list {
+    display: grid;
+    gap: clamp(2.25rem, 5vw, 3.5rem);
+    max-width: 44rem;
+    margin-inline: auto;
+  }
+
+  .price-page__block {
+    scroll-margin-top: calc(var(--header-h) + 1rem);
+  }
+
+  .price-page__head {
+    margin-bottom: 0.35rem;
+  }
+
+  .price-page__head h3 {
+    margin: 0;
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: clamp(1.75rem, 3vw, 2.15rem);
+    font-weight: 600;
+    color: var(--color-green-dark);
+  }
+
+  .price-page__head :global(.section__flourish) {
+    margin: 0.45rem 0 0.85rem;
+  }
+
+  .price-page__rows {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .price-page__rows li {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: baseline;
+    gap: 0.65rem;
+    padding: 0.95rem 0;
+    border-bottom: 1px solid color-mix(in srgb, var(--color-border) 65%, transparent);
+  }
+
+  .price-page__rows li:last-child {
+    border-bottom: 0;
+    padding-bottom: 0;
+  }
+
+  .price-page__name {
+    font-weight: 600;
+    color: var(--color-ink);
+    font-size: 0.98rem;
+  }
+
+  .price-page__dots {
+    height: 0;
+    border-bottom: 1px dotted color-mix(in srgb, var(--color-green-dark) 28%, transparent);
+    transform: translateY(-0.35rem);
+  }
+
+  .price-page__value {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--color-green-dark);
+    text-align: right;
+  }
+
+  .price-page__cta {
+    --cta-cream: #eef6f0;
+    --cta-cream-muted: rgba(238, 246, 240, 0.8);
+
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+    color: var(--cta-cream);
+    background: #0f3d1f;
+  }
+
+  .price-page__cta::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background-image: url('/images/salon-bg.webp');
+    background-size: cover;
+    background-position: center;
+    opacity: 0.22;
+    pointer-events: none;
+  }
+
+  .price-page__cta::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background: linear-gradient(
+      120deg,
+      rgba(15, 61, 31, 0.92) 0%,
+      rgba(17, 92, 43, 0.84) 48%,
+      rgba(15, 61, 31, 0.9) 100%
+    );
+    pointer-events: none;
+  }
+
+  .price-page__notes {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    max-width: 38rem;
+  }
+
+  .price-page__notes p {
+    color: var(--cta-cream-muted);
+    font-size: 0.95rem;
+  }
+
+  .price-page__notes :global(.btn--accent) {
+    margin-top: 0.5rem;
+    background: var(--color-accent);
+    color: #14261a;
+  }
+
+  .price-page__notes :global(.btn--accent:hover) {
+    background: #d4b03a;
+    color: #14261a;
+  }
+
+  @media (max-width: 700px) {
+    .price-page__nav {
+      flex-wrap: nowrap;
+      justify-content: flex-start;
+      overflow-x: auto;
+      scrollbar-width: none;
+      margin-inline: calc(-1 * clamp(0.75rem, 4vw, 1.25rem));
+      padding-inline: clamp(0.75rem, 4vw, 1.25rem);
+      gap: 0.35rem 1rem;
+    }
+
+    .price-page__nav::-webkit-scrollbar {
+      display: none;
+    }
+
+    .price-page__head {
+      text-align: center;
+    }
+
+    .price-page__head :global(.section__flourish) {
+      margin-inline: auto;
+    }
+
+    .price-page__rows li {
+      grid-template-columns: 1fr;
+      gap: 0.25rem;
+    }
+
+    .price-page__dots {
+      display: none;
+    }
+
+    .price-page__value {
+      text-align: right;
+      font-size: 1.15rem;
+    }
+
+    .price-page__notes :global(.btn) {
+      width: min(100%, 22rem);
+    }
+  }
+</style>

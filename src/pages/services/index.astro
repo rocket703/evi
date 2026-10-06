@@ -1,0 +1,234 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Hero from '../../components/Hero.astro';
+import { services } from '../../data/services';
+import { seoPages } from '../../data/seo';
+---
+
+<BaseLayout
+  title="Services"
+  pageTitle={seoPages.services.title}
+  description={seoPages.services.description}
+>
+  <Hero />
+
+  <section class="section services-page" aria-labelledby="services-page-heading">
+    <div class="container">
+      <div class="section__intro">
+        <h2 id="services-page-heading">Leistungen mit Liebe zum Detail</h2>
+        <p>
+          Von Schnitt und Farbe bis Event und Extensions – hier findest du
+          alles, was ich in Magdeburg-Salbke für dich anbiete.
+        </p>
+      </div>
+
+      <div class="services-page__list">
+        {
+          services.map((service, index) => (
+            <article
+              class:list={[
+                'service-row',
+                { 'service-row--reverse': index % 2 === 1 },
+                { 'service-row--accent': service.slug === 'haarverlaengerungen' },
+              ]}
+              id={service.slug}
+            >
+              <div class="service-row__media">
+                <img
+                  src={service.imageSrc}
+                  alt={service.title}
+                  width="1200"
+                  height="900"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </div>
+              <div class="service-row__copy">
+                <p class="service-row__teaser">{service.teaser}</p>
+                <h3>{service.title}</h3>
+                <span class="section__flourish" aria-hidden="true">S</span>
+                <p>{service.body}</p>
+                <a
+                  class="btn btn--ghost"
+                  href={`/kontakt/?service=${service.slug}#Form`}
+                >
+                  Termin anfragen
+                </a>
+              </div>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .services-page__list {
+    display: grid;
+    gap: clamp(2.5rem, 6vw, 4.5rem);
+  }
+
+  .service-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+    gap: clamp(1.5rem, 4vw, 3rem);
+    align-items: center;
+    scroll-margin-top: calc(var(--header-h) + 1rem);
+  }
+
+  .service-row--reverse {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+  }
+
+  .service-row--reverse .service-row__media {
+    order: 2;
+  }
+
+  .service-row--reverse .service-row__copy {
+    order: 1;
+  }
+
+  .service-row__media {
+    overflow: hidden;
+    border-radius: var(--radius-card);
+    min-height: clamp(220px, 32vw, 340px);
+    background: color-mix(in srgb, var(--color-green-dark) 12%, white);
+  }
+
+  .service-row__media img {
+    width: 100%;
+    height: 100%;
+    min-height: inherit;
+    object-fit: cover;
+    display: block;
+  }
+
+  .service-row__copy {
+    max-width: 34rem;
+  }
+
+  .service-row__teaser {
+    margin: 0 0 0.45rem;
+    color: var(--color-muted);
+    font-size: 0.82rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .service-row__copy h3 {
+    margin: 0;
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: clamp(1.65rem, 3vw, 2.15rem);
+    font-weight: 600;
+    color: var(--color-green-dark);
+    line-height: 1.15;
+  }
+
+  .service-row__copy :global(.section__flourish) {
+    margin: 0.55rem 0 0.95rem;
+  }
+
+  .service-row__copy p {
+    margin: 0 0 1.25rem;
+    text-wrap: pretty;
+  }
+
+  .service-row--accent {
+    --service-pad: max(
+      clamp(0.75rem, 4vw, 1.25rem),
+      calc((100vw - min(1120px, calc(100vw - clamp(1.5rem, 5vw, 2.5rem)))) / 2)
+    );
+
+    position: relative;
+    width: 100vw;
+    margin-left: calc(50% - 50vw);
+    padding: clamp(1.75rem, 4vw, 2.75rem) var(--service-pad);
+    color: #eef6f0;
+    background: #0f3d1f;
+    overflow: hidden;
+    isolation: isolate;
+  }
+
+  .service-row--accent::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background-image: url('/images/salon-bg.webp');
+    background-size: cover;
+    background-position: center;
+    opacity: 0.22;
+    pointer-events: none;
+  }
+
+  .service-row--accent::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background: linear-gradient(
+      120deg,
+      rgba(15, 61, 31, 0.92) 0%,
+      rgba(17, 92, 43, 0.84) 48%,
+      rgba(15, 61, 31, 0.9) 100%
+    );
+    pointer-events: none;
+  }
+
+  .service-row--accent .service-row__media,
+  .service-row--accent .service-row__copy {
+    position: relative;
+    z-index: 1;
+  }
+
+  .service-row--accent .service-row__teaser {
+    color: rgba(238, 246, 240, 0.72);
+  }
+
+  .service-row--accent .service-row__copy h3 {
+    color: #eef6f0;
+  }
+
+  .service-row--accent .service-row__copy p {
+    color: rgba(238, 246, 240, 0.82);
+  }
+
+  .service-row--accent .service-row__copy :global(.section__flourish) {
+    background-color: var(--color-accent);
+  }
+
+  .service-row--accent .service-row__copy :global(.btn--ghost) {
+    color: #fff;
+    border-color: rgba(255, 255, 255, 0.75);
+  }
+
+  .service-row--accent .service-row__copy :global(.btn--ghost:hover) {
+    background: rgba(255, 255, 255, 0.12);
+    color: #fff;
+    border-color: #fff;
+  }
+
+  @media (max-width: 800px) {
+    .service-row,
+    .service-row--reverse {
+      grid-template-columns: 1fr;
+      gap: 1.15rem;
+    }
+
+    .service-row--reverse .service-row__media,
+    .service-row--reverse .service-row__copy {
+      order: initial;
+    }
+
+    .service-row__media {
+      min-height: 210px;
+    }
+
+    .service-row__copy {
+      max-width: none;
+    }
+  }
+</style>

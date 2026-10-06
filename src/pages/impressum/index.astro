@@ -1,0 +1,101 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { site } from '../../data/site';
+import { seoPages } from '../../data/seo';
+---
+
+<BaseLayout
+  title="Impressum"
+  pageTitle={seoPages.impressum.title}
+  description={seoPages.impressum.description}
+>
+  <section class="section">
+    <div class="container legal">
+      <h1>Impressum</h1>
+      <span class="section__flourish" aria-hidden="true">S</span>
+
+      <p class="legal__lead">Angaben gemäß § 5 DDG</p>
+
+      <p>
+        {site.owner}<br />
+        Atelier Haarkunst<br />
+        {site.address.street}<br />
+        {site.address.zip} {site.address.city}
+      </p>
+
+      <h2>Kontakt</h2>
+      <p>
+        Telefon: <a href={site.phoneHref}>{site.phone}</a><br />
+        E-Mail: <a href={`mailto:${site.email}`}>{site.email}</a>
+      </p>
+
+      <h2>Umsatzsteuer-ID</h2>
+      <p>
+        Umsatzsteuer-Identifikationsnummer gemäß § 27a UStG:
+        {site.legal.vatId}
+      </p>
+
+      <h2>Berufsrechtliche Angaben</h2>
+      <p>
+        Berufsbezeichnung: Friseurmeisterin (verliehen in Deutschland)<br />
+        Zuständige Kammer: Handwerkskammer Magdeburg, Gareisstraße 10, 39106
+        Magdeburg<br />
+        Eingetragen in der Handwerksrolle unter Nr.: [bitte ergänzen]<br />
+        Berufsrechtliche Regelungen: Handwerksordnung (HwO), einsehbar unter
+        <a
+          href="https://www.gesetze-im-internet.de/hwo/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          https://www.gesetze-im-internet.de/hwo/
+        </a>
+      </p>
+
+      <h2>Verbraucherstreitbeilegung</h2>
+      <p>
+        Wir sind nicht bereit oder verpflichtet, an Streitbeilegungsverfahren
+        vor einer Verbraucherschlichtungsstelle teilzunehmen.
+      </p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .legal {
+    max-width: 46rem;
+    background: var(--color-white);
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-card);
+    padding: clamp(1.5rem, 4vw, 2.5rem);
+  }
+
+  .legal h1 {
+    margin-bottom: 0.35rem;
+    text-align: center;
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: 600;
+    color: var(--color-green-dark);
+  }
+
+  .legal .section__flourish {
+    margin: 0.35rem auto 1.25rem;
+  }
+
+  .legal__lead {
+    color: var(--color-muted);
+    font-size: 0.95rem;
+    text-align: center;
+  }
+
+  .legal h2 {
+    margin-top: 2rem;
+    font-family: var(--font-sans);
+    font-style: normal;
+    font-size: 1.2rem;
+  }
+
+  .legal p:last-child {
+    margin-bottom: 0;
+  }
+</style>

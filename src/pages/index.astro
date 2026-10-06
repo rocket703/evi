@@ -1,0 +1,439 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/Hero.astro';
+import ServiceCard from '../components/ServiceCard.astro';
+import PriceTabs from '../components/PriceTabs.astro';
+import Gallery from '../components/Gallery.astro';
+import Reviews from '../components/Reviews.astro';
+import Faq from '../components/Faq.astro';
+import Social from '../components/Social.astro';
+import Funding from '../components/Funding.astro';
+import { homeServiceCards } from '../data/services';
+import { site } from '../data/site';
+import { seoPages } from '../data/seo';
+---
+
+<BaseLayout
+  title={site.name}
+  pageTitle={seoPages.home.title}
+  description={seoPages.home.description}
+  ogTitle={seoPages.home.ogTitle}
+>
+  <Hero />
+
+  <section class="intro section intro--home" aria-labelledby="intro-heading">
+    <div class="container intro__inner" data-reveal>
+      <div class="intro__portrait-wrap">
+        <div class="intro__ring" aria-hidden="true"></div>
+        <div class="intro__portrait placeholder">
+          <span>Foto Evi</span>
+        </div>
+      </div>
+      <div class="intro__copy">
+        <h2 id="intro-heading">Hallo, ich bin Evi</h2>
+        <span class="section__flourish" aria-hidden="true">S</span>
+        <p>
+          Ich bin seit 21 Jahren Friseurin aus Leidenschaft und habe kürzlich
+          meine Meisterausbildung abgeschlossen und den Traum von meinem eigenen
+          Laden erfüllt. Wenn ihr einen entspannten Besuch in meinem Salon buchen
+          wollt, meldet euch doch gern bei mir.
+        </p>
+        <p>Ich freue mich auf euch und eure Wünsche.</p>
+      </div>
+    </div>
+  </section>
+
+  <div data-reveal>
+    <Reviews />
+  </div>
+
+  <section class="services-overview section" aria-labelledby="services-heading">
+    <div class="container">
+      <div class="section__intro">
+        <h2 id="services-heading">Unsere Services im Überblick</h2>
+        <p>
+          Ich biete dir alles rund um dein Haar: vom Haarschnitt über Farbe und
+          Highlights bis hin zu Styling und Pflege. So findest du genau die
+          Leistung, die zu dir passt.
+        </p>
+      </div>
+      <div class="services-overview__pager" data-scroll-pager>
+        <div class="services-overview__grid" data-scroll-track>
+          {
+            homeServiceCards.map((service) => (
+              <div class="services-overview__item" data-scroll-slide>
+                <ServiceCard
+                  title={service.title}
+                  teaser={service.teaser}
+                  href={`/services/#${service.slug}`}
+                  imageSrc={service.imageSrc}
+                  imageAlt={service.title}
+                />
+              </div>
+            ))
+          }
+        </div>
+
+        <div
+          class="services-overview__dots"
+          role="tablist"
+          aria-label="Leistungen durchblättern"
+        >
+          {
+            homeServiceCards.map((service, i) => (
+              <button
+                type="button"
+                class:list={['services-overview__dot', { 'is-active': i === 0 }]}
+                role="tab"
+                aria-label={service.title}
+                aria-current={i === 0 ? 'true' : undefined}
+                data-scroll-dot={i}
+              />
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <PriceTabs />
+
+  <Gallery />
+
+  <section class="great-lengths section" aria-labelledby="gl-heading">
+    <div class="great-lengths__bg" aria-hidden="true"></div>
+    <div class="container great-lengths__inner">
+      <img
+        class="great-lengths__media"
+        src={site.images.greatLengths}
+        alt="Great Lengths Certified Salon"
+        width="512"
+        height="512"
+        loading="lazy"
+        decoding="async"
+      />
+      <div class="great-lengths__copy">
+        <h2 id="gl-heading">
+          Dein Spezialist für Haarverlängerungen in Magdeburg.
+        </h2>
+        <span class="section__flourish" aria-hidden="true">S</span>
+        <p>
+          Erfülle dir den Traum von langem, vollem Haar – mit einer
+          professionellen Haarverlängerung von Great Lengths in unserem Salon in
+          Magdeburg. Ob natürliche Fülle, mehr Volumen oder atemberaubende Länge
+          – wir verwenden ausschließlich hochwertige Echthaare von Great Lengths
+          für ein perfekt natürliches Ergebnis.
+        </p>
+        <a class="btn btn--accent" href="/services/#haarverlaengerungen">
+          Mehr erfahren
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <Faq />
+
+  <Social />
+
+  <Funding />
+</BaseLayout>
+
+<style>
+  .intro--home {
+    padding-block: clamp(2rem, 5vw, 3.5rem);
+  }
+
+  .intro__inner {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: clamp(1.35rem, 4vw, 2.5rem);
+    align-items: center;
+    max-width: 48rem;
+    margin-inline: auto;
+  }
+
+  .intro__portrait-wrap {
+    position: relative;
+    width: clamp(9.5rem, 24vw, 12.5rem);
+    height: clamp(9.5rem, 24vw, 12.5rem);
+    flex-shrink: 0;
+  }
+
+  .intro__ring {
+    position: absolute;
+    inset: -0.45rem;
+    border-radius: 50%;
+    border: 1px solid color-mix(in srgb, var(--color-accent) 60%, transparent);
+    box-shadow: 0 12px 28px rgba(17, 92, 43, 0.1);
+  }
+
+  .intro__portrait {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    overflow: hidden;
+    font-size: 0.85rem;
+  }
+
+  .intro__copy h2 {
+    margin-bottom: 0.55rem;
+    font-size: clamp(1.85rem, 3.5vw, 2.35rem);
+  }
+
+  .intro__copy p:last-child {
+    margin-bottom: 0;
+  }
+
+  /* Dezente Scroll-Reveals */
+  [data-reveal] {
+    opacity: 0;
+    transform: translateY(1.1rem);
+    transition:
+      opacity 0.7s ease,
+      transform 0.7s ease;
+  }
+
+  [data-reveal].is-visible {
+    opacity: 1;
+    transform: none;
+  }
+
+  .intro__inner[data-reveal] .intro__portrait-wrap {
+    transition: transform 0.8s ease, opacity 0.8s ease;
+    transition-delay: 0.05s;
+  }
+
+  .intro__inner[data-reveal] .intro__copy {
+    transition: transform 0.8s ease, opacity 0.8s ease;
+    transition-delay: 0.16s;
+  }
+
+  .intro__inner[data-reveal]:not(.is-visible) .intro__portrait-wrap,
+  .intro__inner[data-reveal]:not(.is-visible) .intro__copy {
+    opacity: 0;
+    transform: translateY(1rem);
+  }
+
+  .intro__inner[data-reveal].is-visible .intro__portrait-wrap,
+  .intro__inner[data-reveal].is-visible .intro__copy {
+    opacity: 1;
+    transform: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    [data-reveal],
+    .intro__inner[data-reveal] .intro__portrait-wrap,
+    .intro__inner[data-reveal] .intro__copy {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .intro--home {
+      padding-top: 1.25rem;
+      padding-bottom: 2rem;
+    }
+
+    .intro--home .intro__portrait-wrap {
+      width: 8.75rem;
+      height: 8.75rem;
+    }
+
+    .intro--home .intro__inner {
+      gap: 1rem;
+    }
+  }
+
+  .services-overview__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+  }
+
+  .great-lengths {
+    --gl-green: #0f3d1f;
+    --gl-green-mid: #154a28;
+    --gl-cream: #eef6f0;
+    --gl-cream-muted: rgba(238, 246, 240, 0.8);
+
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+    color: var(--gl-cream);
+    background: var(--gl-green);
+  }
+
+  .great-lengths__bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background-image: url('/images/salon-bg.webp');
+    background-size: cover;
+    background-position: center;
+    opacity: 0.26;
+    pointer-events: none;
+  }
+
+  .great-lengths__bg::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      120deg,
+      rgba(15, 61, 31, 0.92) 0%,
+      rgba(17, 92, 43, 0.84) 48%,
+      rgba(15, 61, 31, 0.9) 100%
+    );
+  }
+
+  .great-lengths__inner {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: minmax(0, 260px) 1fr;
+    gap: 2rem;
+    align-items: center;
+  }
+
+  .great-lengths__media {
+    width: 100%;
+    height: auto;
+    border-radius: var(--radius-card);
+    display: block;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.28);
+    background: rgba(255, 255, 255, 0.06);
+  }
+
+  .great-lengths__copy h2 {
+    color: var(--gl-cream);
+  }
+
+  .great-lengths__copy p {
+    color: var(--gl-cream-muted);
+  }
+
+  .great-lengths__copy :global(.section__flourish) {
+    background-color: var(--color-accent);
+  }
+
+  .great-lengths__copy :global(.btn--accent) {
+    background: var(--color-accent);
+    color: #14261a;
+  }
+
+  .great-lengths__copy :global(.btn--accent:hover) {
+    background: #d4b03a;
+    color: #14261a;
+  }
+
+  @media (max-width: 720px) {
+    .intro__inner {
+      grid-template-columns: 1fr;
+      justify-items: center;
+      text-align: center;
+    }
+
+    .intro__copy .section__flourish,
+    .great-lengths__inner .section__flourish {
+      margin-inline: auto;
+    }
+  }
+
+  .services-overview__dots {
+    display: none;
+  }
+
+  @media (max-width: 900px) {
+    .services-overview__grid {
+      display: flex;
+      gap: 1rem;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      overscroll-behavior-x: contain;
+      scrollbar-width: none;
+      margin-inline: calc(-1 * clamp(0.75rem, 4vw, 1.25rem));
+      padding: 0.25rem clamp(1rem, 5vw, 1.5rem) 0.5rem;
+    }
+
+    .services-overview__grid::-webkit-scrollbar {
+      display: none;
+    }
+
+    .services-overview__item {
+      flex: 0 0 min(82vw, 20rem);
+      scroll-snap-align: center;
+    }
+
+    .services-overview__dots {
+      display: flex;
+      justify-content: center;
+      gap: 0.4rem;
+      margin-top: 0.85rem;
+    }
+
+    .services-overview__dot {
+      width: 0.5rem;
+      height: 0.5rem;
+      padding: 0;
+      border: 0;
+      border-radius: 999px;
+      background: color-mix(in srgb, var(--color-green-dark) 28%, white);
+      cursor: pointer;
+      transition: width 0.2s ease, background 0.2s ease;
+    }
+
+    .services-overview__dot.is-active {
+      width: 1.25rem;
+      background: var(--color-green-dark);
+    }
+
+    .great-lengths__inner {
+      grid-template-columns: 1fr;
+      justify-items: center;
+      text-align: center;
+      gap: 1.25rem;
+    }
+
+    .great-lengths__media {
+      width: min(100%, 14rem);
+      height: auto;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .great-lengths__copy :global(.btn) {
+      width: min(100%, 22rem);
+    }
+  }
+</style>
+
+<script>
+  import { initScrollPager } from '../scripts/scrollPager';
+
+  document
+    .querySelectorAll('.services-overview')
+    .forEach((root) => initScrollPager(root));
+
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const nodes = document.querySelectorAll<HTMLElement>('[data-reveal]');
+
+  if (reduceMotion || !('IntersectionObserver' in window)) {
+    nodes.forEach((node) => node.classList.add('is-visible'));
+  } else {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        });
+      },
+      { threshold: 0.22, rootMargin: '0px 0px -8% 0px' },
+    );
+
+    nodes.forEach((node) => observer.observe(node));
+  }
+</script>

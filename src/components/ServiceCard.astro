@@ -1,0 +1,93 @@
+---
+interface Props {
+  title: string;
+  teaser: string;
+  href?: string;
+  imageSrc?: string;
+  imageAlt?: string;
+}
+
+const {
+  title,
+  teaser,
+  href = '/services/',
+  imageSrc,
+  imageAlt = title,
+} = Astro.props;
+---
+
+<article class="card">
+  <a class="card__media" href={href} aria-label={title}>
+    {
+      imageSrc ? (
+        <img
+          class="card__img"
+          src={imageSrc}
+          alt={imageAlt}
+          width="800"
+          height="600"
+          loading="lazy"
+          decoding="async"
+        />
+      ) : (
+        <div class="placeholder placeholder--card">Bild folgt</div>
+      )
+    }
+  </a>
+  <div class="card__body">
+    <h3 class="card__title">
+      <a href={href}>{title}</a>
+    </h3>
+    <p>{teaser}</p>
+  </div>
+</article>
+
+<style>
+  .card {
+    background: var(--color-white);
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-card);
+    overflow: hidden;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .card__media {
+    text-decoration: none;
+    display: block;
+  }
+
+  .card__img {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    display: block;
+  }
+
+  .card__body {
+    padding: 1.25rem 1.35rem 1.5rem;
+    flex: 1;
+  }
+
+  .card__title {
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    font-size: 1rem;
+  }
+
+  .card__title a {
+    color: var(--color-green-dark);
+    text-decoration: none;
+  }
+
+  .card__title a:hover {
+    color: var(--color-green);
+  }
+
+  .card__body p {
+    margin: 0;
+    font-size: 0.95rem;
+  }
+</style>
