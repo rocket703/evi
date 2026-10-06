@@ -68,10 +68,13 @@ const {
   .hero__media {
     position: relative;
     width: 100%;
-    min-height: clamp(380px, 62vh, 560px);
+    /* svh: stabile Höhe – dvh/vh springt mit Browser-Chrome und zoomt das Cover-Bild */
+    min-height: clamp(380px, 62svh, 560px);
     overflow: hidden;
     border-radius: 0 0 1.75rem 1.75rem;
     background: #14261a;
+    /* iOS: eigenes Layer, weniger Scroll-/Repaint-Glitches */
+    transform: translateZ(0);
   }
 
   .hero__img {
@@ -81,6 +84,8 @@ const {
     height: 100%;
     object-fit: cover;
     object-position: 40% center;
+    /* Height fest am Container – kein Nachziehen beim Scroll */
+    pointer-events: none;
   }
 
   .hero__shade {
@@ -205,9 +210,9 @@ const {
 
   @media (max-width: 640px) {
     .hero__media {
-      /* Platz für Header + Evi-Foto im ersten Viewport lassen */
+      /* Platz für Header + Evi-Foto; svh = keine Zoom-Jump bei URL-Bar */
       min-height: 0;
-      height: min(52dvh, 390px);
+      height: min(52svh, 390px);
     }
 
     .hero__overlay {

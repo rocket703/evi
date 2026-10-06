@@ -100,9 +100,9 @@ const localBusinessSchema = {
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={absoluteOgImage} />
 
-    <link rel="icon" type="image/png" href={withBase('/favicon.png')} />
-    <link rel="icon" type="image/svg+xml" href={withBase('/favicon.svg')} />
-    <link rel="apple-touch-icon" href={withBase('/favicon.png')} />
+    <link rel="icon" type="image/png" sizes="32x32" href={withBase('/favicon.png')} />
+    <link rel="icon" href={withBase('/favicon.ico')} sizes="any" />
+    <link rel="apple-touch-icon" sizes="180x180" href={withBase('/apple-touch-icon.png')} />
     <link rel="sitemap" type="application/xml" href={withBase('/sitemap.xml')} />
 
     <title>{resolvedTitle}</title>
