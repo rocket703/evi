@@ -46,7 +46,7 @@ export const site = {
 } as const;
 
 export const nav = [
-  { label: 'Preisliste', href: withBase('/preisliste/') },
-  { label: 'Services', href: withBase('/services/') },
+  { label: 'Meine Preise', href: withBase('/preisliste/') },
+  { label: 'Meine Services', href: withBase('/services/') },
   { label: 'Kontakt', href: withBase('/kontakt/') },
 ] as const;
