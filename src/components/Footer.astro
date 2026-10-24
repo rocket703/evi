@@ -1,77 +1,312 @@
 ---
+import Icon from './Icon.astro';
 import { site } from '../data/site';
 import { withBase } from '../lib/paths';
+import OpeningHours from './OpeningHours.astro';
 
+interface Props {
+  showCard?: boolean;
+}
+
+const { showCard = true } = Astro.props;
 const year = new Date().getFullYear();
 ---
 
 <footer class="footer">
+  <div class="footer__top container">
+    <a class="footer__logo" href={withBase('/')} aria-label={`${site.name} – Startseite`}>
+      <img src={site.images.logo} alt="" width="500" height="465" loading="lazy" decoding="async" />
+    </a>
+    <p class="footer__claim">{site.tagline}</p>
+    <span class:list={['section__flourish footer__flourish', { 'footer__flourish--last': !showCard }]} aria-hidden="true"></span>
+
+    {showCard && (
+    <div class="footer__card">
+      <div class="footer__wood" aria-hidden="true"></div>
+      <div class="footer__col">
+        <p class="footer__heading">Besuch mich</p>
+        <address>
+          {site.address.street}<br />
+          {site.address.zip} {site.address.city}
+        </address>
+        <a class="footer__link" href={site.address.mapsUrl} target="_blank" rel="noopener noreferrer">
+          Route planen <Icon name="arrow-right" />
+        </a>
+      </div>
+
+      <div class="footer__col">
+        <p class="footer__heading">Kontakt</p>
+        <p class="footer__lines">
+          <a href={site.phoneHref}>{site.phone}</a><br />
+          <a href={`mailto:${site.email}`}>{site.email}</a>
+        </p>
+        <a class="btn btn--accent footer__cta" href={withBase('/kontakt/#Form')}>Termin anfragen</a>
+      </div>
+
+      <div class="footer__col footer__col--hours">
+        <p class="footer__heading">Öffnungszeiten</p>
+        <OpeningHours compact onDark />
+      </div>
+    </div>
+    )}
+  </div>
+
   <div class="footer__bar">
     <div class="footer__bar-inner container">
       <p>
-        Copyright © {year}
-        {site.name} — Webdesign:
+        © {year}
+        {site.name} · Webdesign:
         <a href={site.designer.url} target="_blank" rel="noopener noreferrer">
           {site.designer.name}
         </a>
       </p>
-      <nav class="footer__legal" aria-label="Rechtliches">
-        <a href={withBase('/impressum/')}>Impressum</a>
-        <a href={withBase('/datenschutz/')}>Datenschutz</a>
-      </nav>
+      <div class="footer__bar-right">
+        <nav class="footer__legal" aria-label="Rechtliches">
+          <a href={withBase('/impressum/')}>Impressum</a>
+          <a href={withBase('/datenschutz/')}>Datenschutz</a>
+        </nav>
+        <div class="footer__social">
+          <a href={site.social.instagram} target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+            <Icon name="instagram" />
+          </a>
+          <a href={site.social.facebook} target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+            <Icon name="facebook" />
+          </a>
+        </div>
+      </div>
     </div>
   </div>
 </footer>
 
 <style>
   .footer {
-    margin-top: 0;
+    border-top: 1px solid color-mix(in srgb, var(--color-green-dark) 10%, transparent);
   }
 
+  /* Oberer Teil: hell, zentriert – Logo, Claim, eine Karte mit drei Spalten */
+  .footer__top {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: clamp(2.75rem, 6vw, 4rem) 0 clamp(2.5rem, 5vw, 3.5rem);
+  }
+
+  .footer__logo img {
+    width: 6.5rem;
+    height: auto;
+  }
+
+  .footer__claim {
+    margin: 0.6rem 0 0;
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: 600;
+    font-size: 1.45rem;
+    color: var(--color-green-dark);
+  }
+
+  .footer__flourish {
+    margin: 0.5rem auto 1.75rem;
+  }
+
+  .footer__flourish--last {
+    margin-bottom: 0;
+  }
+
+  /* Karte im Stil der Bewertungen: Braun mit Holzbild */
+  .footer__card {
+    --card-cream: #f4ece4;
+
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    width: 100%;
+    max-width: 58rem;
+    color: var(--card-cream);
+    background: #2c211c;
+    border-radius: var(--radius-card);
+    box-shadow: 0 18px 40px rgba(44, 33, 28, 0.25);
+  }
+
+  .footer__wood {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background-image: var(--image-reviews-bg);
+    background-size: cover;
+    background-position: 40% center;
+    opacity: 0.28;
+  }
+
+  .footer__wood::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      160deg,
+      rgba(61, 45, 36, 0.82) 0%,
+      rgba(44, 33, 28, 0.88) 45%,
+      rgba(36, 26, 22, 0.92) 100%
+    );
+  }
+
+  .footer__col {
+    padding: 1.75rem 1.5rem;
+  }
+
+  .footer__col + .footer__col {
+    border-left: 1px solid rgba(244, 236, 228, 0.14);
+  }
+
+  .footer__heading {
+    margin: 0 0 0.75rem;
+    color: var(--color-accent);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+
+  .footer__col address,
+  .footer__lines {
+    margin: 0 0 1rem;
+    font-style: normal;
+    color: var(--card-cream);
+    line-height: 1.7;
+  }
+
+  .footer__col a:not(.btn) {
+    color: var(--card-cream);
+    text-decoration: none;
+  }
+
+  .footer__col a:not(.btn):hover {
+    color: var(--color-accent);
+  }
+
+  .footer__col a.footer__link:not(.btn) {
+    color: var(--color-accent);
+    font-weight: 500;
+    font-size: 0.95rem;
+  }
+
+  .footer__cta {
+    padding: 10px 22px;
+    font-size: 0.9rem;
+  }
+
+  .footer__col--hours {
+    text-align: left;
+  }
+
+  .footer__col--hours .footer__heading {
+    text-align: center;
+  }
+
+  /* Unterer Teil: grüne Leiste */
   .footer__bar {
-    border-top: 1px solid color-mix(in srgb, var(--color-green-dark) 12%, transparent);
-    background: color-mix(in srgb, var(--color-bg) 70%, white);
+    color: rgba(238, 246, 240, 0.8);
+    background: var(--color-green-dark);
   }
 
   .footer__bar-inner {
     display: flex;
     flex-wrap: wrap;
+    align-items: center;
     justify-content: space-between;
     gap: 0.75rem 1.5rem;
-    padding: 1rem 0;
+    padding: 0.9rem 0;
     font-size: 0.875rem;
-    color: var(--color-muted);
   }
 
   .footer__bar-inner p {
     margin: 0;
   }
 
-  .footer__legal {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.85rem 1.25rem;
-  }
-
-  .footer__bar-inner a {
-    color: var(--color-muted);
+  .footer__bar a {
+    color: #eef6f0;
     text-decoration: none;
   }
 
-  .footer__bar-inner a:hover {
+  .footer__bar a:hover {
+    color: var(--color-accent);
+  }
+
+  /* Link im Fließtext zusätzlich unterstreichen, nicht nur per Farbe */
+  .footer__bar-inner p a {
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+
+  .footer__bar-right {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+  }
+
+  .footer__legal {
+    display: flex;
+    gap: 1.25rem;
+  }
+
+  .footer__social {
+    display: flex;
+    gap: 0.6rem;
+  }
+
+  .footer__social a {
+    display: grid;
+    place-items: center;
+    width: 2.6rem;
+    height: 2.6rem;
+    border-radius: 50%;
+    background: var(--color-accent);
+    color: var(--color-green-dark);
+    transition:
+      background 0.2s ease,
+      color 0.2s ease;
+  }
+
+  .footer__social a:hover,
+  .footer__social a:focus-visible {
+    background: #fff;
     color: var(--color-green-dark);
   }
 
-  @media (max-width: 640px) {
-    .footer__bar-inner {
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-      padding: 1rem 0 1.25rem;
+  .footer__social a {
+    font-size: 1.25rem;
+  }
+
+  @media (max-width: 760px) {
+    .footer__card {
+      grid-template-columns: 1fr;
     }
 
-    .footer__legal {
-      justify-content: center;
+    .footer__col + .footer__col {
+      border-left: 0;
+      border-top: 1px solid rgba(244, 236, 228, 0.14);
+    }
+
+    .footer__col--hours :global(.hours) {
+      max-width: 17rem;
+      margin-inline: auto;
+    }
+
+    .footer__bar-inner,
+    .footer__bar-right {
+      flex-direction: column;
+      text-align: center;
+    }
+
+    .footer__bar-inner {
+      padding: 1.1rem 0 1.25rem;
+    }
+
+    .footer__bar-right {
+      gap: 0.75rem;
     }
   }
 </style>

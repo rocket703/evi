@@ -8,4 +8,8 @@ export default defineConfig({
     : 'https://www.atelier-haarkunst.de',
   base: isGitHubPages ? '/evi' : '/',
   compressHTML: true,
+  // Kleines CSS direkt ins HTML – spart render-blockierende Requests
+  build: {
+    inlineStylesheets: 'always',
+  },
 });

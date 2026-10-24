@@ -1,0 +1,350 @@
+---
+import Icon from './Icon.astro';
+import { services } from '../data/services';
+import { withBase } from '../lib/paths';
+
+const pad = (n: number) => String(n).padStart(2, '0');
+---
+
+<section class="services-reveal section" aria-labelledby="services-heading">
+  <div class="container">
+    <div class="section__intro">
+      <h2 id="services-heading">Meine Services im Überblick</h2>
+      <p>
+        Ich biete dir alles rund um dein Haar: vom Haarschnitt über Farbe und
+        Highlights bis hin zu Styling und Pflege. So findest du genau die
+        Leistung, die zu dir passt.
+      </p>
+    </div>
+
+    <div class="reveal" data-service-reveal>
+      <div class="reveal__media">
+        {
+          services.map((service, i) => (
+            <img
+              class:list={['reveal__img', { 'is-active': i === 0 }]}
+              src={service.revealSrc}
+              srcset={`${service.revealSrc.replace('.webp', '-600.webp')} 600w, ${service.revealSrc} 1000w`}
+              sizes="(max-width: 800px) calc(100vw - 2rem), 560px"
+              alt={service.title}
+              width="1000"
+              height="1250"
+              loading="lazy"
+              decoding="async"
+              data-reveal-img={i}
+            />
+          ))
+        }
+        <img class="reveal__ghost" alt="" aria-hidden="true" data-reveal-ghost />
+        <span class="reveal__counter" aria-hidden="true">
+          <span data-reveal-count>01</span> / {pad(services.length)}
+        </span>
+      </div>
+
+      <div class="reveal__panel">
+        <p class="reveal__eyebrow">Leistungen</p>
+        <ul class="reveal__list">
+          {
+            services.map((service, i) => (
+              <li class:list={['reveal__item', { 'is-active': i === 0 }]} data-reveal-item={i}>
+                <button
+                  type="button"
+                  class="reveal__trigger"
+                  aria-pressed={i === 0 ? 'true' : 'false'}
+                >
+                  <span class="reveal__num">{pad(i + 1)}</span>
+                  <span class="reveal__title">{service.title}</span>
+                </button>
+                <a
+                  class="reveal__go"
+                  href={withBase(`/services/#${service.slug}`)}
+                  aria-label={`${service.title} – mehr erfahren`}
+                >
+                  <Icon name="arrow-right" />
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .reveal {
+    display: grid;
+    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1fr);
+    max-width: 60rem;
+    margin-inline: auto;
+    background: var(--color-white);
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-card);
+    overflow: hidden;
+  }
+
+  /* Desktop: Bild füllt die Höhe der Liste (kein Leerraum über/unter der Liste) */
+  .reveal__media {
+    position: relative;
+    min-height: 26rem;
+    background: color-mix(in srgb, var(--color-green-dark) 12%, white);
+    overflow: hidden;
+  }
+
+  .reveal__img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    z-index: 0;
+  }
+
+  .reveal__img.is-prev {
+    opacity: 1;
+    z-index: 1;
+  }
+
+  /* Das echte Bild bewegt sich nie – es blendet nur an seiner festen Position ein */
+  .reveal__img.is-active {
+    opacity: 1;
+    z-index: 2;
+    transition: opacity 0.8s cubic-bezier(0.25, 0.8, 0.25, 1);
+  }
+
+  /* Durchsichtige Kopie davor liefert den Zoom „von vorne“ und ist beim Ankommen
+     schon ausgeblendet – deshalb kein Zittern beim Einrasten */
+  .reveal__ghost {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 3;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .reveal__counter {
+    position: absolute;
+    left: 1rem;
+    top: 1rem;
+    z-index: 5;
+    padding: 0.2rem 0.7rem;
+    border-radius: var(--radius-pill);
+    background: rgba(255, 255, 255, 0.88);
+    color: var(--color-green-dark);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .reveal__panel {
+    padding: clamp(1.5rem, 3vw, 2.25rem) clamp(1.25rem, 4vw, 3rem);
+  }
+
+  /* Bündig mit den Titeln, nicht mit den Nummern */
+  .reveal__eyebrow {
+    margin: 0 0 0.75rem;
+    padding-left: calc(1.4rem + 0.9rem);
+    color: var(--color-muted);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+  }
+
+  .reveal__item {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    border-top: 1px solid color-mix(in srgb, var(--color-green-dark) 14%, white);
+  }
+
+  .reveal__item:last-child {
+    border-bottom: 1px solid color-mix(in srgb, var(--color-green-dark) 14%, white);
+  }
+
+  .reveal__trigger {
+    display: flex;
+    align-items: baseline;
+    gap: 0.9rem;
+    width: 100%;
+    padding: 0.55rem 0 0.45rem;
+    border: 0;
+    background: none;
+    text-align: left;
+    cursor: pointer;
+    font: inherit;
+  }
+
+  .reveal__trigger:focus-visible {
+    outline: 2px solid var(--color-green);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  .reveal__num {
+    min-width: 1.4rem;
+    color: var(--color-accent-text);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    font-variant-numeric: tabular-nums;
+    transform: translateY(-0.55em);
+  }
+
+  .reveal__title {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: 600;
+    /* min. 24px = „große Schrift“ – dafür reicht Kontrast 3:1 */
+    font-size: clamp(1.5rem, 2.2vw, 1.8rem);
+    line-height: 1.15;
+    color: color-mix(in srgb, var(--color-green-dark) 62%, white);
+    transition:
+      color 0.3s ease,
+      transform 0.35s ease;
+  }
+
+  .reveal__item.is-active .reveal__title {
+    color: var(--color-green-dark);
+    transform: translateX(0.3rem);
+  }
+
+  .reveal__go {
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 50%;
+    background: var(--color-green-dark);
+    color: var(--color-white);
+    text-decoration: none;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(-0.4rem);
+    pointer-events: none;
+    transition:
+      opacity 0.3s ease,
+      transform 0.3s ease,
+      visibility 0.3s;
+  }
+
+  .reveal__item.is-active .reveal__go {
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    pointer-events: auto;
+  }
+
+  .reveal__go:hover {
+    background: var(--color-green);
+    color: var(--color-white);
+  }
+
+  @media (max-width: 800px) {
+    .reveal {
+      grid-template-columns: 1fr;
+    }
+
+
+
+    .reveal__media {
+      min-height: 0;
+      aspect-ratio: 4 / 3;
+    }
+
+    .reveal__panel {
+      padding-top: 1.25rem;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reveal__ghost {
+      display: none;
+    }
+
+    .reveal__img.is-active,
+    .reveal__title {
+      transition: none;
+    }
+  }
+
+  .reveal__go {
+    font-size: 1.1rem;
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-service-reveal]').forEach((root) => {
+    const items = [...root.querySelectorAll<HTMLElement>('[data-reveal-item]')];
+    const imgs = [...root.querySelectorAll<HTMLImageElement>('[data-reveal-img]')];
+    const ghost = root.querySelector<HTMLImageElement>('[data-reveal-ghost]');
+    const count = root.querySelector<HTMLElement>('[data-reveal-count]');
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const canHover = window.matchMedia('(hover: hover) and (pointer: fine)');
+    let current = 0;
+
+    const activate = (i: number) => {
+      if (i === current) return;
+      imgs.forEach((img) => img.classList.remove('is-prev'));
+      imgs[current].classList.replace('is-active', 'is-prev');
+      // Startzustand erzwingen, damit das Einblenden auch beim Zurück-Hovern läuft
+      const next = imgs[i];
+      next.classList.remove('is-active');
+      void next.offsetWidth;
+      next.classList.add('is-active');
+
+      if (ghost && !reduceMotion.matches) {
+        ghost.getAnimations().forEach((a) => a.cancel());
+        ghost.src = next.currentSrc || next.src;
+        ghost.animate(
+          [
+            { transform: 'scale(1.1)', opacity: 0 },
+            { opacity: 0.45, offset: 0.3 },
+            { transform: 'scale(1)', opacity: 0 },
+          ],
+          { duration: 1000, easing: 'cubic-bezier(0.25, 0.8, 0.25, 1)' },
+        );
+      }
+
+      items.forEach((item, n) => {
+        item.classList.toggle('is-active', n === i);
+        item.querySelector('button')?.setAttribute('aria-pressed', String(n === i));
+      });
+
+      if (count) count.textContent = String(i + 1).padStart(2, '0');
+      current = i;
+    };
+
+    items.forEach((item, i) => {
+      // Desktop: Hover. Mobil/Touch: Klick. Tastatur: Fokus.
+      item.addEventListener('mouseenter', () => {
+        if (canHover.matches) activate(i);
+      });
+      item.querySelector('button')?.addEventListener('click', () => activate(i));
+      item.addEventListener('focusin', () => activate(i));
+    });
+
+    // Bilder vorladen, damit der Wechsel sofort sitzt
+    const preload = () => imgs.forEach((img) => (img.loading = 'eager'));
+    if ('IntersectionObserver' in window) {
+      const io = new IntersectionObserver(
+        (entries) => {
+          if (entries.some((e) => e.isIntersecting)) {
+            preload();
+            io.disconnect();
+          }
+        },
+        { rootMargin: '400px 0px' },
+      );
+      io.observe(root);
+    } else {
+      preload();
+    }
+  });
+</script>

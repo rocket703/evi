@@ -1,14 +1,15 @@
 ---
+import Icon from './Icon.astro';
 import { galleryItems } from '../data/services';
 ---
 
 <section class="gallery section" aria-labelledby="gallery-heading">
   <div class="container">
     <div class="section__intro">
-      <h2 id="gallery-heading">Inspiration für Ihren neuen Look</h2>
+      <h2 id="gallery-heading">Inspiration für deinen neuen Look</h2>
       <p>
-        In unserer Galerie entdecken Sie eine Auswahl an aktuellen Frisuren,
-        Farben und Stylings aus dem Salon in Magdeburg.
+        Hier findest du eine Auswahl aktueller Frisuren, Farben und Stylings
+        aus meinem Salon in Magdeburg.
       </p>
     </div>
 
@@ -88,9 +89,7 @@ import { galleryItems } from '../data/services';
           aria-label="Vorheriges Bild"
           data-gallery-prev
         >
-          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-            <path d="M15 6 9 12l6 6"></path>
-          </svg>
+          <Icon name="chevron-left" />
         </button>
 
         <div class="gallery-carousel__dots" role="tablist" aria-label="Galerie-Folien" data-gallery-dots>
@@ -114,9 +113,7 @@ import { galleryItems } from '../data/services';
           aria-label="Nächstes Bild"
           data-gallery-next
         >
-          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-            <path d="m9 6 6 6-6 6"></path>
-          </svg>
+          <Icon name="chevron-right" />
         </button>
       </div>
     </div>
@@ -136,9 +133,7 @@ import { galleryItems } from '../data/services';
       data-lightbox-close
       aria-label="Schließen"
     >
-      <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-        <path d="M6 6l12 12M18 6 6 18"></path>
-      </svg>
+      <Icon name="x" />
     </button>
 
     <button
@@ -147,9 +142,7 @@ import { galleryItems } from '../data/services';
       data-lightbox-prev
       aria-label="Vorheriges Bild"
     >
-      <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-        <path d="M15 6 9 12l6 6"></path>
-      </svg>
+      <Icon name="chevron-left" />
     </button>
 
     <img class="lightbox__img" data-lightbox-img alt="" />
@@ -160,9 +153,7 @@ import { galleryItems } from '../data/services';
       data-lightbox-next
       aria-label="Nächstes Bild"
     >
-      <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-        <path d="m9 6 6 6-6 6"></path>
-      </svg>
+      <Icon name="chevron-right" />
     </button>
 
     <p class="lightbox__count" data-lightbox-count aria-live="polite"></p>
@@ -170,10 +161,13 @@ import { galleryItems } from '../data/services';
 </section>
 
 <style>
+  /* 6 Bilder: 3 × 2 ohne Lücke */
   .gallery__grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     gap: 1rem;
+    max-width: 58rem;
+    margin-inline: auto;
   }
 
   .gallery__item {
@@ -339,7 +333,7 @@ import { galleryItems } from '../data/services';
 
     .gallery-carousel {
       display: block;
-      margin-inline: calc(-1 * clamp(0.75rem, 4vw, 1.25rem));
+      margin-inline: calc(-0.5 * clamp(1.5rem, 5vw, 2.5rem));
     }
 
     .gallery-carousel__track {
@@ -406,31 +400,48 @@ import { galleryItems } from '../data/services';
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
-      gap: 0.4rem;
-      max-width: 12rem;
+      gap: 0;
+      max-width: 14rem;
     }
 
+    /* 24px Tippfläche, sichtbar bleibt der kleine Punkt (::before) */
     .gallery-carousel__dot {
-      width: 0.5rem;
-      height: 0.5rem;
+      display: grid;
+      place-items: center;
+      width: 1.5rem;
+      height: 1.5rem;
       padding: 0;
       border: 0;
+      background: none;
+      cursor: pointer;
+    }
+
+    .gallery-carousel__dot::before {
+      content: '';
+      width: 0.5rem;
+      height: 0.5rem;
       border-radius: 999px;
       background: color-mix(in srgb, var(--color-green-dark) 28%, white);
-      cursor: pointer;
       transition: width 0.2s ease, background 0.2s ease;
     }
 
-    .gallery-carousel__dot.is-active {
+    .gallery-carousel__dot.is-active::before {
       width: 1.25rem;
       background: var(--color-green-dark);
     }
   }
 
-  @media (min-width: 901px) and (max-width: 1100px) {
-    .gallery__grid {
-      grid-template-columns: repeat(3, 1fr);
-    }
+  /* Lucide-Icons: Größe über font-size */
+  .gallery-carousel__btn {
+    font-size: 1.25rem;
+  }
+
+  .lightbox__nav {
+    font-size: 1.65rem;
+  }
+
+  .lightbox__close {
+    font-size: 1.75rem;
   }
 </style>
 

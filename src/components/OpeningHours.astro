@@ -1,0 +1,95 @@
+---
+import { site } from '../data/site';
+
+interface Props {
+  /** compact: Kurzform für den Footer (Mo, Di …) */
+  compact?: boolean;
+  /** Helle Schrift für dunklen Hintergrund */
+  onDark?: boolean;
+}
+
+const { compact = false, onDark = false } = Astro.props;
+const fmt = (t: string) => t.replace(':', '.');
+---
+
+<dl class:list={['hours', { 'hours--compact': compact, 'hours--dark': onDark }]} data-hours>
+  {
+    site.hours.map((h, i) => (
+      <div class:list={['hours__row', { 'is-closed': !h.opens }]} data-hours-day={(i + 1) % 7}>
+        <dt>{compact ? h.short : h.day}</dt>
+        <dd>{h.opens ? `${fmt(h.opens)} – ${fmt(h.closes!)} Uhr` : 'geschlossen'}</dd>
+      </div>
+    ))
+  }
+</dl>
+
+<style>
+  .hours {
+    margin: 0;
+    display: grid;
+    gap: 0.15rem;
+  }
+
+  .hours__row {
+    display: flex;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding: 0.4rem 0.6rem;
+    border-radius: 0.5rem;
+  }
+
+  .hours dt {
+    font-weight: 500;
+    color: var(--color-ink);
+  }
+
+  .hours dd {
+    margin: 0;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .hours__row.is-closed dd {
+    color: var(--color-muted);
+  }
+
+  /* Heute hervorheben */
+  .hours__row.is-today {
+    background: color-mix(in srgb, var(--color-accent) 16%, transparent);
+  }
+
+  .hours__row.is-today dt {
+    color: var(--color-green-dark);
+  }
+
+  .hours--dark dt {
+    color: #eef6f0;
+  }
+
+  .hours--dark dd {
+    color: rgba(238, 246, 240, 0.82);
+  }
+
+  .hours--dark .hours__row.is-closed dd {
+    color: rgba(238, 246, 240, 0.6);
+  }
+
+  .hours--dark .hours__row.is-today {
+    background: color-mix(in srgb, var(--color-accent) 22%, transparent);
+  }
+
+  .hours--dark .hours__row.is-today dt {
+    color: var(--color-accent);
+  }
+
+  .hours--compact .hours__row {
+    padding: 0.15rem 0.45rem;
+    font-size: 0.9rem;
+  }
+</style>
+
+<script>
+  const today = String(new Date().getDay());
+  document.querySelectorAll('[data-hours]').forEach((list) => {
+    list.querySelector(`[data-hours-day="${today}"]`)?.classList.add('is-today');
+  });
+</script>

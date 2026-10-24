@@ -2,15 +2,38 @@
 import { site } from '../data/site';
 import { withBase } from '../lib/paths';
 
+/** Zeile: optionaler Vorsatz + Goldwort + optionaler Nachsatz */
+type HeroLine = { small?: string; em: string; after?: string };
+
 interface Props {
   imageSrc?: string;
   imageAlt?: string;
+  /** H1 je Seite – jede Zeile: kleiner Vorsatz + großes Schmuckwort */
+  lines?: HeroLine[];
+  /** Kleine weiße Zeile unter dem Goldwort (Unterseiten) */
+  subline?: string;
+  lead?: string;
+  /** Zweiten Button ausblenden (z. B. auf der Preisliste selbst) */
+  showPriceLink?: boolean;
 }
 
 const {
   imageSrc = site.images.hero,
   imageAlt = 'Saloninterior von Atelier Haarkunst in Magdeburg',
+  lines = [
+    { small: 'Dein', em: 'Friseur' },
+    { small: 'im Süden von', em: 'Magdeburg' },
+  ],
+  subline,
+  lead = 'Schnitt, Farbe und Pflege mit Liebe zum Detail – in einem Salon, in dem du dich wohlfühlst.',
+  showPriceLink = true,
 } = Astro.props;
+
+// Kleinere Varianten nur für das Standard-Hero-Bild vorhanden
+const srcset =
+  imageSrc === site.images.hero
+    ? `${imageSrc.replace('.webp', '-800.webp')} 800w, ${imageSrc.replace('.webp', '-1400.webp')} 1400w, ${imageSrc} 2400w`
+    : undefined;
 ---
 
 <section class="hero" aria-label="Hero">
@@ -18,6 +41,8 @@ const {
     <img
       class="hero__img"
       src={imageSrc}
+      srcset={srcset}
+      sizes="100vw"
       alt={imageAlt}
       width="1920"
       height="1080"
@@ -35,24 +60,28 @@ const {
           </p>
 
           <h1 class="hero__title">
-            <span class="hero__line">
-              <span class="hero__small">Dein</span>
-              <em>Friseur</em>
-            </span>
-            <span class="hero__line">
-              <span class="hero__small">im Süden von</span>
-              <em>Magdeburg</em>
-            </span>
+            {
+              lines.map((line) => (
+                <span class="hero__line">
+                  {line.small && <span class="hero__small">{line.small}</span>} <em>{line.em}</em>{' '}
+                  {line.after && <span class="hero__small">{line.after}</span>}
+                </span>
+              ))
+            }
+            {subline && <span class="hero__sub">{subline}</span>}
           </h1>
 
-          <p class="hero__lead">
-            Schnitt, Farbe und Pflege mit Liebe zum Detail – in einem Salon, in dem
-            du dich wohlfühlst.
-          </p>
+          <p class="hero__lead">{lead}</p>
 
           <div class="hero__actions">
             <a class="btn btn--accent" href={withBase('/kontakt/#Form')}>Termin vereinbaren</a>
-            <a class="btn btn--ghost-light" href={withBase('/preisliste/')}>Preisliste ansehen</a>
+            {
+              showPriceLink && (
+                <a class="btn btn--ghost-light" href={withBase('/preisliste/')}>
+                  Preisliste ansehen
+                </a>
+              )
+            }
           </div>
         </div>
       </div>
@@ -171,6 +200,13 @@ const {
     color: var(--color-accent);
   }
 
+  .hero__sub {
+    margin-top: 0.35em;
+    font-size: clamp(1.15rem, 2.6vw, 1.85rem);
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.92);
+  }
+
   .hero__lead {
     margin: 0;
     max-width: 28rem;
@@ -209,6 +245,21 @@ const {
   }
 
   @media (max-width: 640px) {
+    /* Handy: Text liegt über dem ganzen Foto (auch der goldenen Tapete) – gleichmäßig abdunkeln */
+    .hero__shade {
+      background:
+        linear-gradient(
+          to bottom,
+          rgba(10, 22, 14, 0.55) 0%,
+          rgba(10, 22, 14, 0.72) 45%,
+          rgba(10, 22, 14, 0.82) 100%
+        );
+    }
+
+    .hero__title em {
+      text-shadow: 0 2px 14px rgba(0, 0, 0, 0.55);
+    }
+
     .hero__media {
       /* Platz für Header + Evi-Foto; svh = keine Zoom-Jump bei URL-Bar */
       min-height: 0;
@@ -235,12 +286,18 @@ const {
       flex-wrap: wrap;
     }
 
-    .hero__small {
-      font-size: clamp(1.05rem, 4.2vw, 1.25rem);
+    .hero__small,
+    .hero__sub {
+      font-size: clamp(1.15rem, 5vw, 1.4rem);
     }
 
     .hero__title em {
-      font-size: clamp(2.05rem, 10vw, 2.85rem);
+      font-size: clamp(2.4rem, 12.5vw, 3.2rem);
+    }
+
+    /* Unterlängen (g) der großen Schrift brauchen Luft zum Fließtext */
+    .hero__title {
+      margin-bottom: 0.35rem;
     }
 
     .hero__actions {

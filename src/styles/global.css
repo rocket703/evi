@@ -9,7 +9,9 @@
   --color-white: #ffffff;
   --color-border: #d1d5db;
   --color-accent: #c9a227;
-  --color-muted: #7a7a7a;
+  /* Gold für kleine Schrift auf Hell – erfüllt Kontrast 4,5:1 */
+  --color-accent-text: #7d620c;
+  --color-muted: #636363;
 
   --font-sans: 'Roboto', system-ui, sans-serif;
   --font-serif: 'Lora', Georgia, serif;
@@ -36,6 +38,8 @@
 
 html {
   scroll-behavior: smooth;
+  /* Kein seitliches Verschieben auf dem Handy; clip lässt sticky intakt */
+  overflow-x: clip;
 }
 
 body {
@@ -55,12 +59,12 @@ img {
 }
 
 a {
-  color: var(--color-green);
+  color: var(--color-green-dark);
   text-underline-offset: 0.15em;
 }
 
 a:hover {
-  color: var(--color-green-dark);
+  color: var(--color-green);
 }
 
 h1,

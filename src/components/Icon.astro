@@ -1,0 +1,49 @@
+---
+/**
+ * Einheitliche Icons aus Lucide (lucide-static), beim Build direkt als SVG ins HTML geschrieben –
+ * keine Requests, kein Icon-Font, kein CDN. Größe über font-size bzw. width/height per CSS (1em).
+ */
+interface Props {
+  name: string;
+  class?: string;
+  /** Gefüllte Variante, z. B. für Bewertungssterne */
+  filled?: boolean;
+}
+
+// Restliche Attribute (u. a. Scope der Eltern-Komponente) ans SVG weiterreichen
+const { name, class: className, filled = false, ...rest } = Astro.props;
+
+const files = import.meta.glob<string>('/node_modules/lucide-static/icons/*.svg', {
+  query: '?raw',
+  import: 'default',
+});
+const load = files[`/node_modules/lucide-static/icons/${name}.svg`];
+if (!load) throw new Error(`Lucide-Icon „${name}“ nicht gefunden`);
+
+const raw = await load();
+const inner = raw.replace(/<!--[\s\S]*?-->/, '').replace(/^[\s\S]*?<svg[^>]*>/, '').replace(/<\/svg>\s*$/, '');
+---
+
+<svg
+  class:list={['icon', className]}
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill={filled ? 'currentColor' : 'none'}
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  aria-hidden="true"
+  focusable="false"
+  {...rest}
+  set:html={inner}
+/>
+
+<style>
+  .icon {
+    width: 1em;
+    height: 1em;
+    flex-shrink: 0;
+    vertical-align: -0.125em;
+  }
+</style>

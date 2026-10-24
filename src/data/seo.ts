@@ -14,14 +14,14 @@ export const seoPages = {
     path: withBase('/'),
     title: 'Friseur Magdeburg - Atelier Haarkunst in Salbke',
     description:
-      'Atelier Haarkunst: Willkommen bei Deinem neuen Friseur in Magdeburg-Salbke. Schnitt, Farbe und Pflege mit Liebe zum Detail – komm vorbei und lern uns kennen!',
+      'Atelier Haarkunst: Willkommen bei Deinem neuen Friseur in Magdeburg-Salbke. Schnitt, Farbe und Pflege mit Liebe zum Detail – komm vorbei und lern mich kennen!',
     ogTitle: 'Atelier Haarkunst – Dein Friseur im Süden von Magdeburg',
   },
   services: {
     path: withBase('/services/'),
-    title: 'Leistungen & Services | Atelier Haarkunst Magdeburg',
+    title: 'Leistungen & Haarverlängerung in Magdeburg | Atelier Haarkunst',
     description:
-      'Von Haarschnitt bis Balayage: typgerechte Beratung, hochwertige Produkte, präzises Styling. Entdecke unsere Leistungen bei Atelier Haarkunst in Magdeburg.',
+      'Haarschnitt, Farbe, Balayage, Pflege, Event- & Brautfrisuren – und Haarverlängerung mit Great Lengths von der zertifizierten Expertin in Magdeburg-Salbke.',
   },
   preisliste: {
     path: withBase('/preisliste/'),
@@ -33,7 +33,7 @@ export const seoPages = {
     path: withBase('/kontakt/'),
     title: 'Kontakt & Termin | Atelier Haarkunst Magdeburg',
     description:
-      'Termin anfragen bei Atelier Haarkunst in Magdeburg-Salbke. Adresse, Telefon, E-Mail und Kontaktformular – wir freuen uns auf dich.',
+      'Termin anfragen bei Atelier Haarkunst in Magdeburg-Salbke. Adresse, Telefon, E-Mail und Kontaktformular – ich freue mich auf dich.',
   },
   impressum: {
     path: withBase('/impressum/'),

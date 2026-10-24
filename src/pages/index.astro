@@ -1,14 +1,12 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Hero from '../components/Hero.astro';
-import ServiceCard from '../components/ServiceCard.astro';
+import ServiceReveal from '../components/ServiceReveal.astro';
 import PriceTabs from '../components/PriceTabs.astro';
 import Gallery from '../components/Gallery.astro';
 import Reviews from '../components/Reviews.astro';
 import Faq from '../components/Faq.astro';
-import Social from '../components/Social.astro';
 import Funding from '../components/Funding.astro';
-import { homeServiceCards } from '../data/services';
 import { site } from '../data/site';
 import { seoPages } from '../data/seo';
 import { withBase } from '../lib/paths';
@@ -26,9 +24,15 @@ import { withBase } from '../lib/paths';
     <div class="container intro__inner" data-reveal>
       <div class="intro__portrait-wrap">
         <div class="intro__ring" aria-hidden="true"></div>
-        <div class="intro__portrait placeholder">
-          <span>Foto Evi</span>
-        </div>
+        <img
+          class="intro__portrait"
+          src={site.images.evi}
+          alt="Evelyn Selbig, Friseurmeisterin und Inhaberin von Atelier Haarkunst"
+          width="400"
+          height="400"
+          loading="lazy"
+          decoding="async"
+        />
       </div>
       <div class="intro__copy">
         <h2 id="intro-heading">Hallo, ich bin Evi</h2>
@@ -48,54 +52,7 @@ import { withBase } from '../lib/paths';
     <Reviews />
   </div>
 
-  <section class="services-overview section" aria-labelledby="services-heading">
-    <div class="container">
-      <div class="section__intro">
-        <h2 id="services-heading">Meine Services im Überblick</h2>
-        <p>
-          Ich biete dir alles rund um dein Haar: vom Haarschnitt über Farbe und
-          Highlights bis hin zu Styling und Pflege. So findest du genau die
-          Leistung, die zu dir passt.
-        </p>
-      </div>
-      <div class="services-overview__pager" data-scroll-pager>
-        <div class="services-overview__grid" data-scroll-track>
-          {
-            homeServiceCards.map((service) => (
-              <div class="services-overview__item" data-scroll-slide>
-                <ServiceCard
-                  title={service.title}
-                  teaser={service.teaser}
-                  href={withBase(`/services/#${service.slug}`)}
-                  imageSrc={service.imageSrc}
-                  imageAlt={service.title}
-                />
-              </div>
-            ))
-          }
-        </div>
-
-        <div
-          class="services-overview__dots"
-          role="tablist"
-          aria-label="Leistungen durchblättern"
-        >
-          {
-            homeServiceCards.map((service, i) => (
-              <button
-                type="button"
-                class:list={['services-overview__dot', { 'is-active': i === 0 }]}
-                role="tab"
-                aria-label={service.title}
-                aria-current={i === 0 ? 'true' : undefined}
-                data-scroll-dot={i}
-              />
-            ))
-          }
-        </div>
-      </div>
-    </div>
-  </section>
+  <ServiceReveal />
 
   <PriceTabs />
 
@@ -120,9 +77,9 @@ import { withBase } from '../lib/paths';
         <span class="section__flourish" aria-hidden="true">S</span>
         <p>
           Erfülle dir den Traum von langem, vollem Haar – mit einer
-          professionellen Haarverlängerung von Great Lengths in unserem Salon in
+          professionellen Haarverlängerung von Great Lengths in meinem Salon in
           Magdeburg. Ob natürliche Fülle, mehr Volumen oder atemberaubende Länge
-          – wir verwenden ausschließlich hochwertige Echthaare von Great Lengths
+          – ich verwende ausschließlich hochwertige Echthaare von Great Lengths
           für ein perfekt natürliches Ergebnis.
         </p>
         <a class="btn btn--accent" href={withBase('/services/#haarverlaengerungen')}>
@@ -133,8 +90,6 @@ import { withBase } from '../lib/paths';
   </section>
 
   <Faq />
-
-  <Social />
 
   <Funding />
 </BaseLayout>
@@ -155,8 +110,8 @@ import { withBase } from '../lib/paths';
 
   .intro__portrait-wrap {
     position: relative;
-    width: clamp(9.5rem, 24vw, 12.5rem);
-    height: clamp(9.5rem, 24vw, 12.5rem);
+    width: clamp(10.5rem, 26vw, 15rem);
+    height: clamp(10.5rem, 26vw, 15rem);
     flex-shrink: 0;
   }
 
@@ -172,8 +127,7 @@ import { withBase } from '../lib/paths';
     width: 100%;
     height: 100%;
     border-radius: 50%;
-    overflow: hidden;
-    font-size: 0.85rem;
+    object-fit: cover;
   }
 
   .intro__copy h2 {
@@ -238,19 +192,13 @@ import { withBase } from '../lib/paths';
     }
 
     .intro--home .intro__portrait-wrap {
-      width: 8.75rem;
-      height: 8.75rem;
+      width: 10.5rem;
+      height: 10.5rem;
     }
 
     .intro--home .intro__inner {
       gap: 1rem;
     }
-  }
-
-  .services-overview__grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1.25rem;
   }
 
   .great-lengths {
@@ -342,55 +290,7 @@ import { withBase } from '../lib/paths';
     }
   }
 
-  .services-overview__dots {
-    display: none;
-  }
-
   @media (max-width: 900px) {
-    .services-overview__grid {
-      display: flex;
-      gap: 1rem;
-      overflow-x: auto;
-      scroll-snap-type: x mandatory;
-      -webkit-overflow-scrolling: touch;
-      overscroll-behavior-x: contain;
-      scrollbar-width: none;
-      margin-inline: calc(-1 * clamp(0.75rem, 4vw, 1.25rem));
-      padding: 0.25rem clamp(1rem, 5vw, 1.5rem) 0.5rem;
-    }
-
-    .services-overview__grid::-webkit-scrollbar {
-      display: none;
-    }
-
-    .services-overview__item {
-      flex: 0 0 min(82vw, 20rem);
-      scroll-snap-align: center;
-    }
-
-    .services-overview__dots {
-      display: flex;
-      justify-content: center;
-      gap: 0.4rem;
-      margin-top: 0.85rem;
-    }
-
-    .services-overview__dot {
-      width: 0.5rem;
-      height: 0.5rem;
-      padding: 0;
-      border: 0;
-      border-radius: 999px;
-      background: color-mix(in srgb, var(--color-green-dark) 28%, white);
-      cursor: pointer;
-      transition: width 0.2s ease, background 0.2s ease;
-    }
-
-    .services-overview__dot.is-active {
-      width: 1.25rem;
-      background: var(--color-green-dark);
-    }
-
     .great-lengths__inner {
       grid-template-columns: 1fr;
       justify-items: center;
@@ -412,12 +312,6 @@ import { withBase } from '../lib/paths';
 </style>
 
 <script>
-  import { initScrollPager } from '../scripts/scrollPager';
-
-  document
-    .querySelectorAll('.services-overview')
-    .forEach((root) => initScrollPager(root));
-
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const nodes = document.querySelectorAll<HTMLElement>('[data-reveal]');
 

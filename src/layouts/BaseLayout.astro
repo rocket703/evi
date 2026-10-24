@@ -15,6 +15,8 @@ interface Props {
   ogTitle?: string;
   ogImage?: string;
   noindex?: boolean;
+  /** Kontakt-Karte im Footer ausblenden (z. B. auf /kontakt/, wo die Infos schon stehen) */
+  hideFooterCard?: boolean;
 }
 
 const {
@@ -24,6 +26,7 @@ const {
   ogTitle,
   ogImage = defaultOgImage,
   noindex = false,
+  hideFooterCard = false,
 } = Astro.props;
 
 const resolvedTitle =
@@ -50,7 +53,10 @@ const localBusinessSchema = {
   name: site.name,
   description: site.tagline,
   url: homeURL.href,
-  image: new URL(site.images.logo, Astro.site).href,
+  image: [
+    new URL(site.images.hero, Astro.site).href,
+    new URL(site.images.logo, Astro.site).href,
+  ],
   logo: new URL(site.images.logo, Astro.site).href,
   telephone: site.phoneHref.replace('tel:', ''),
   email: site.email,
@@ -59,15 +65,28 @@ const localBusinessSchema = {
     streetAddress: site.address.street,
     postalCode: site.address.zip,
     addressLocality: site.address.city,
+    addressRegion: 'Sachsen-Anhalt',
     addressCountry: 'DE',
   },
   geo: {
     '@type': 'GeoCoordinates',
-    // Magdeburg Salbke – ungefähre Koordinaten, später präzisieren
-    latitude: 52.0955,
-    longitude: 11.6668,
+    ...site.geo,
   },
-  sameAs: [site.social.instagram.split('?')[0], site.social.facebook],
+  hasMap: site.address.mapsUrl,
+  openingHoursSpecification: site.hours
+    .filter((h) => h.opens)
+    .map((h) => ({
+      '@type': 'OpeningHoursSpecification',
+      dayOfWeek: `https://schema.org/${h.schemaDay}`,
+      opens: h.opens,
+      closes: h.closes,
+    })),
+  founder: {
+    '@type': 'Person',
+    name: site.owner,
+    jobTitle: 'Friseurmeisterin',
+  },
+  sameAs: [site.social.instagram, site.social.facebook],
   priceRange: '€€',
 };
 ---
@@ -118,6 +137,6 @@ const localBusinessSchema = {
     <main id="content" class="site-main">
       <slot />
     </main>
-    <Footer />
+    <Footer showCard={!hideFooterCard} />
   </body>
 </html>
