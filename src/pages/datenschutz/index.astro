@@ -2,6 +2,9 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { site } from '../../data/site';
 import { seoPages } from '../../data/seo';
+
+// Anbieter von Nameservern, Formularen und E-Mail-Versand (wie bei alcartron-hifi)
+const mailtoryAddress = 'Inhaber: Felix Münch, Sankt Michael 57, 91056 Erlangen';
 ---
 
 <BaseLayout
@@ -58,20 +61,46 @@ import { seoPages } from '../../data/seo';
         Datenschutz können Sie sich jederzeit an uns wenden.
       </p>
 
-      <h2>2. Hosting</h2>
+      <h2>2. Hosting und Auslieferung der Website</h2>
       <p>
-        Diese Website wird als statische Website bereitgestellt. Beim Aufruf der
-        Seiten können technisch notwendige Verbindungsdaten (insbesondere
-        IP-Adresse, Zeitpunkt des Zugriffs, aufgerufene Datei, Browsertyp und
-        Betriebssystem) in Server-Logfiles verarbeitet werden. Die Verarbeitung
-        erfolgt auf Grundlage von Art.&nbsp;6 Abs.&nbsp;1 lit.&nbsp;f DSGVO aus
-        berechtigtem Interesse an einer sicheren und stabilen Bereitstellung der
-        Website.
+        Diese Website läuft auf einem eigenen Server in einem Rechenzentrum in
+        Deutschland, den unser Webdienstleister für uns betreibt. Der Server wird
+        bei einem Hosting-Dienstleister mit Sitz in Deutschland gemietet. Mit
+        beiden besteht ein Vertrag über die Auftragsverarbeitung nach
+        Art.&nbsp;28 DSGVO. Es werden keine Daten an Content-Delivery-Netzwerke
+        (CDN) oder Cloud-Anbieter außerhalb Deutschlands übermittelt.
       </p>
       <p>
-        Soweit ein externer Hosting-Anbieter eingesetzt wird, verarbeitet dieser
-        die genannten Daten in unserem Auftrag. Mit dem Anbieter wird – soweit
-        erforderlich – ein Vertrag zur Auftragsverarbeitung geschlossen.
+        Beim Aufruf der Website verarbeitet der Webserver technisch notwendige
+        Daten, insbesondere Ihre IP-Adresse, Datum und Uhrzeit des Abrufs, die
+        aufgerufene Adresse sowie Browser-Typ und Betriebssystem. Der Webserver
+        verwendet diese Daten, um die Seiten auszuliefern, und speichert keine
+        Zugriffsprotokolle. Lediglich technische Fehlermeldungen des Servers
+        können in Einzelfällen eine IP-Adresse enthalten; sie dienen der
+        Sicherheit und Fehlerbehebung und werden nach spätestens 14 Tagen
+        automatisch gelöscht.
+      </p>
+      <p>
+        Zusätzlich verarbeitet der Hosting-Dienstleister Verbindungsdaten wie
+        IP-Adressen, soweit das für den Betrieb des Netzwerks und die Abwehr von
+        Überlastungsangriffen (DDoS-Schutz) nötig ist. Das geschieht in unserem
+        Auftrag und auf Grundlage des Vertrags über die Auftragsverarbeitung.
+      </p>
+      <p>
+        Rechtsgrundlage ist jeweils Art.&nbsp;6 Abs.&nbsp;1 lit.&nbsp;f DSGVO.
+        Unser berechtigtes Interesse liegt in einer sicheren und stabilen
+        Bereitstellung der Website.
+      </p>
+      <p>
+        Die Nameserver der Domain (DNS) betreibt Mailtory, {mailtoryAddress},
+        ebenfalls auf Servern in Deutschland. Sie teilen Ihrem Browser lediglich
+        mit, unter welcher Adresse die Website erreichbar ist.
+      </p>
+      <h3>Schriftarten</h3>
+      <p>
+        Die auf dieser Website verwendeten Schriftarten und Symbole werden von
+        unserem eigenen Server ausgeliefert. Es findet keine Verbindung zu
+        Servern von Google oder anderen Schriftanbietern statt.
       </p>
 
       <h2>3. Allgemeine Hinweise und Pflichtinformationen</h2>
@@ -192,33 +221,26 @@ import { seoPages } from '../../data/seo';
       </p>
 
       <h2>4. Datenerfassung auf dieser Website</h2>
-      <h3>Server-Logfiles</h3>
-      <p>
-        Der Provider der Seiten erhebt und speichert automatisch Informationen
-        in sogenannten Server-Logfiles, die Ihr Browser automatisch übermittelt.
-        Dies sind insbesondere:
-      </p>
-      <ul>
-        <li>Browsertyp und Browserversion</li>
-        <li>verwendetes Betriebssystem</li>
-        <li>Referrer-URL</li>
-        <li>Hostname des zugreifenden Rechners</li>
-        <li>Uhrzeit der Serveranfrage</li>
-        <li>IP-Adresse</li>
-      </ul>
-      <p>
-        Eine Zusammenführung dieser Daten mit anderen Datenquellen wird nicht
-        vorgenommen. Die Erfassung erfolgt auf Grundlage von Art.&nbsp;6
-        Abs.&nbsp;1 lit.&nbsp;f DSGVO.
-      </p>
-
       <h3>Kontaktformular</h3>
       <p>
-        Wenn Sie uns über das Kontaktformular schreiben, öffnet sich in der
-        Regel Ihr lokales E-Mail-Programm (mailto). Die von Ihnen eingegebenen
-        Angaben (z.&nbsp;B. Name, E-Mail, Telefon, Wunschtermin, Nachricht)
-        werden dabei nicht auf unserem Webserver gespeichert, sondern über Ihr
-        E-Mail-Programm an uns übermittelt.
+        Wenn Sie uns über das Kontaktformular schreiben, verarbeiten wir die von
+        Ihnen angegebenen Daten: Name, E-Mail-Adresse, optional Telefonnummer
+        und Wunschtermin, den gewählten Betreff sowie Ihre Nachricht. Wir nutzen
+        diese Daten ausschließlich, um Ihre Anfrage zu beantworten und
+        gegebenenfalls einen Termin zu vereinbaren.
+      </p>
+      <p>
+        Für den Versand des Formulars nutzen wir den Dienst Mailtory,
+        {mailtoryAddress}. Mailtory nimmt die Formulardaten entgegen und leitet
+        sie per E-Mail an uns weiter. Beim Absenden überträgt Ihr Browser die
+        Angaben verschlüsselt an den Server von Mailtory; dabei wird technisch
+        bedingt auch Ihre IP-Adresse übermittelt. Mailtory verarbeitet die Daten
+        ausschließlich in unserem Auftrag und nach unseren Weisungen
+        (Auftragsverarbeitung nach Art.&nbsp;28 DSGVO). Die Daten werden nur auf
+        Servern in Deutschland gespeichert; eine Übermittlung in Länder außerhalb
+        der EU bzw. des EWR findet nicht statt. Ein unsichtbares Zusatzfeld im
+        Formular dient dem Schutz vor automatisierten Spam-Einsendungen; dabei
+        werden keine zusätzlichen Daten über Sie erhoben.
       </p>
       <p>
         Die anschließende Verarbeitung Ihrer Anfrage erfolgt auf Grundlage von

@@ -110,7 +110,11 @@ const homeHref = withBase('/');
   .header__toggle:hover,
   .header__toggle:focus-visible {
     background: color-mix(in srgb, var(--color-green-dark) 8%, transparent);
-    outline: none;
+  }
+
+  .header__toggle:focus-visible {
+    outline: 2px solid var(--color-green-dark);
+    outline-offset: 2px;
   }
 
   .header__toggle-box {
@@ -181,9 +185,17 @@ const homeHref = withBase('/');
     font-size: 0.95rem;
   }
 
-  .header__link:hover,
+  .header__link:hover {
+    color: var(--color-green-dark);
+  }
+
+  /* Aktive Seite: dunkles Grün (Kontrast) + goldene Unterstreichung */
   .header__link.is-current {
-    color: var(--color-green);
+    color: var(--color-green-dark);
+    text-decoration: underline;
+    text-decoration-color: var(--color-accent);
+    text-decoration-thickness: 2px;
+    text-underline-offset: 0.35em;
   }
 
   @media (max-width: 768px) {
@@ -245,5 +257,12 @@ const homeHref = withBase('/');
 
   nav?.querySelectorAll('a').forEach((link) => {
     link.addEventListener('click', () => setOpen(false));
+  });
+
+  // Escape schließt das Menü und setzt den Fokus zurück auf den Button
+  document.addEventListener('keydown', (event) => {
+    if (event.key !== 'Escape' || !nav?.classList.contains('is-open')) return;
+    setOpen(false);
+    toggle?.focus();
   });
 </script>

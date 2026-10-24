@@ -112,6 +112,8 @@ const localBusinessSchema = {
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonicalURL.href} />
     <meta property="og:image" content={absoluteOgImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
     <meta property="og:image:alt" content={`${site.name} – Salon in Magdeburg`} />
 
     <meta name="twitter:card" content="summary_large_image" />
@@ -134,7 +136,7 @@ const localBusinessSchema = {
   <body>
     <a class="skip-link" href="#content">Zum Inhalt springen</a>
     <Header />
-    <main id="content" class="site-main">
+    <main id="content" class="site-main" tabindex="-1">
       <slot />
     </main>
     <Footer showCard={!hideFooterCard} />

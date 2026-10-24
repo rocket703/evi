@@ -92,15 +92,14 @@ import { galleryItems } from '../data/services';
           <Icon name="chevron-left" />
         </button>
 
-        <div class="gallery-carousel__dots" role="tablist" aria-label="Galerie-Folien" data-gallery-dots>
+        <div class="gallery-carousel__dots" role="group" aria-label="Galerie-Bild wählen" data-gallery-dots>
           {
             galleryItems.map((_, i) => (
               <button
                 type="button"
                 class:list={['gallery-carousel__dot', { 'is-active': i === 0 }]}
-                role="tab"
                 aria-label={`Bild ${i + 1}`}
-                aria-selected={i === 0 ? 'true' : 'false'}
+                aria-current={i === 0 ? 'true' : undefined}
                 data-gallery-dot={i}
               />
             ))
@@ -278,7 +277,12 @@ import { galleryItems } from '../data/services';
   .lightbox__nav:hover,
   .lightbox__nav:focus-visible {
     background: rgba(255, 255, 255, 0.22);
-    outline: none;
+  }
+
+  .lightbox__close:focus-visible,
+  .lightbox__nav:focus-visible {
+    outline: 2px solid #fff;
+    outline-offset: 2px;
   }
 
   .lightbox__close:hover,
@@ -346,7 +350,12 @@ import { galleryItems } from '../data/services';
       overscroll-behavior-x: contain;
       scrollbar-width: none;
       padding: 0.25rem clamp(1rem, 5vw, 1.5rem) 0.5rem;
-      outline: none;
+    }
+
+    .gallery-carousel__track:focus-visible {
+      outline: 2px solid var(--color-green-dark);
+      outline-offset: 2px;
+      border-radius: var(--radius-card);
     }
 
     .gallery-carousel__track::-webkit-scrollbar {
@@ -471,7 +480,8 @@ import { galleryItems } from '../data/services';
       dots.forEach((dot, i) => {
         const active = i === index;
         dot.classList.toggle('is-active', active);
-        dot.setAttribute('aria-selected', String(active));
+        if (active) dot.setAttribute('aria-current', 'true');
+        else dot.removeAttribute('aria-current');
       });
     };
 
@@ -605,6 +615,15 @@ import { galleryItems } from '../data/services';
 
     document.addEventListener('keydown', (event) => {
       if (lightbox.hidden) return;
+      // Fokus bleibt im Dialog (Schließen, Zurück, Weiter)
+      if (event.key === 'Tab') {
+        const focusables = [closeBtn, prevBtn, nextBtn];
+        const i = focusables.indexOf(document.activeElement as HTMLButtonElement);
+        event.preventDefault();
+        const step = event.shiftKey ? -1 : 1;
+        focusables[(i + step + focusables.length) % focusables.length].focus();
+        return;
+      }
       if (event.key === 'Escape') {
         event.preventDefault();
         close();

@@ -48,4 +48,5 @@ export const seoPages = {
   },
 } as const satisfies Record<string, PageSeo>;
 
-export const defaultOgImage = withBase('/images/hero.webp');
+/** Vorschaubild für Social Media – JPG, weil nicht alle Dienste WebP anzeigen */
+export const defaultOgImage = withBase('/images/og-image.jpg');

@@ -1,0 +1,80 @@
+# Caddy-Konfiguration für atelier-haarkunst.de (Aufbau wie alcartron-hifi)
+# Die Website ist statisch und wird von GitHub Actions nach /var/www/atelier-haarkunst/releases/<Zeit>/ kopiert;
+# /var/www/atelier-haarkunst/current zeigt per Symlink auf die aktuelle Version (siehe .github/workflows/deploy-server.yml).
+# Ein Deploy braucht KEIN Neuladen von Caddy – die Content-Security-Policy steckt als <meta> in jeder Seite.
+
+(atelier_haarkunst_site) {
+	root * /var/www/atelier-haarkunst/current
+	encode zstd gzip
+
+	# Sicherheit
+	header {
+		Strict-Transport-Security "max-age=31536000; includeSubDomains"
+		X-Content-Type-Options "nosniff"
+		Referrer-Policy "strict-origin-when-cross-origin"
+		X-Frame-Options "SAMEORIGIN"
+		Permissions-Policy "camera=(), microphone=(), geolocation=()"
+		# frame-ancestors ist in <meta> nicht erlaubt – deshalb hier als Header
+		Content-Security-Policy "frame-ancestors 'self'"
+		-Server
+	}
+
+	# Bilder/Skripte mit Prüfsumme im Namen dürfen lange zwischengespeichert werden, Seiten nicht
+	@assets path /_astro/*
+	header @assets Cache-Control "public, max-age=31536000, immutable"
+	@images path /images/* /fonts/*
+	header @images Cache-Control "public, max-age=2592000"
+	@pages path / *.html */
+	header @pages Cache-Control "public, max-age=0, must-revalidate"
+
+	# ---- Weiterleitungen von der alten WordPress-Seite ----
+	redir /index.html / permanent
+	redir /feed / permanent
+	redir /feed/ / permanent
+	redir /comments/feed/ / permanent
+	redir /sitemap_index.xml /sitemap.xml permanent
+	redir /page-sitemap.xml /sitemap.xml permanent
+
+	# Förderplakat (war verlinkt/gedruckt)
+	redir /wp-content/uploads/2025/06/Plakat-mit-www.pdf /Plakat-mit-www.pdf permanent
+
+	# Galerie-Bilder (auch WordPress-Größenvarianten wie -300x200.jpg)
+	@wp_naturlocken path_regexp ^/wp-content/uploads/2025/09/Naturlocken-nach-Farbauffrischung
+	redir @wp_naturlocken /images/gallery/01-naturlocken.webp permanent
+	@wp_locken path_regexp ^/wp-content/uploads/2025/09/Lange-gelockte-Braune-Haare
+	redir @wp_locken /images/gallery/02-lange-locken.webp permanent
+	@wp_hochzeit path_regexp ^/wp-content/uploads/2025/09/Hochzeits-Frisur
+	redir @wp_hochzeit /images/services/reveal/brautfrisuren.webp permanent
+	@wp_waves path_regexp ^/wp-content/uploads/2025/09/Haar-waves
+	redir @wp_waves /images/gallery/04-waves.webp permanent
+	@wp_straehnen path_regexp ^/wp-content/uploads/2025/09/frische-Straehnen
+	redir @wp_straehnen /images/gallery/05-straehnen.webp permanent
+	@wp_bob path_regexp ^/wp-content/uploads/2025/09/Bob
+	redir @wp_bob /images/services/reveal/haarschnitt-styling.webp permanent
+	@wp_blond path_regexp ^/wp-content/uploads/2025/09/Blonde-Haare-dunkel-gefaerbt
+	redir @wp_blond /images/gallery/07-blonde-dunkel.webp permanent
+	@wp_balayage path_regexp ^/wp-content/uploads/2025/09/Balayage
+	redir @wp_balayage /images/gallery/08-balayage.webp permanent
+	@wp_gl path_regexp ^/wp-content/uploads/2025/10/Certified-Salon
+	redir @wp_gl /images/great-lengths.webp permanent
+
+	# Alles übrige von WordPress gibt es nicht mehr: 410 sagt Suchmaschinen „dauerhaft entfernt“
+	@wordpress path /wp-admin /wp-admin/* /wp-login.php /wp-json /wp-json/* /wp-content/* /wp-includes/* /xmlrpc.php /author/*
+	respond @wordpress 410
+
+	file_server
+
+	# Eigene 404-Seite (mit Status 404)
+	handle_errors 404 {
+		rewrite * /404.html
+		file_server
+	}
+}
+
+atelier-haarkunst.de {
+	import atelier_haarkunst_site
+}
+
+www.atelier-haarkunst.de {
+	redir https://atelier-haarkunst.de{uri} permanent
+}

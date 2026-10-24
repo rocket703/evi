@@ -2,12 +2,18 @@
 import Icon from './Icon.astro';
 import { site } from '../data/site';
 import { services } from '../data/services';
+import { withBase } from '../lib/paths';
+import { HONEYPOT_FIELD, KONTAKT_ENDPOINT, KONTAKT_FIELDS as F, mt } from '../lib/forms';
 
 interface Props {
   tone?: 'light' | 'warm';
 }
 
 const { tone = 'light' } = Astro.props;
+
+// Mit Mailtory-Endpoint: Feldnamen im Mailtory-Format; ohne: Notlösung per E-Mail-Programm
+const viaMailtory = KONTAKT_ENDPOINT !== '';
+const field = (label: string) => (viaMailtory ? mt(label) : label);
 
 const betreffOptions = [
   { value: 'Allgemeine Anfrage', slug: '' },
@@ -21,10 +27,14 @@ const betreffOptions = [
 <form
   id="Form"
   class:list={['contact-form', { 'contact-form--warm': tone === 'warm' }]}
-  action={`mailto:${site.email}`}
+  action={viaMailtory ? KONTAKT_ENDPOINT : `mailto:${site.email}`}
   method="post"
-  enctype="text/plain"
+  enctype={viaMailtory ? undefined : 'text/plain'}
+  data-mailtory={viaMailtory ? '' : undefined}
 >
+  <!-- Fallenfeld gegen Spam-Bots (wertet auch Mailtory aus): bleibt für Menschen unsichtbar und leer -->
+  <input type="text" name={HONEYPOT_FIELD} class="contact-form__hp" tabindex="-1" autocomplete="off" aria-hidden="true" />
+
   <div class="contact-form__grid">
     <div class="contact-form__full contact-form__field">
       <span class="contact-form__label" id="betreff-label">
@@ -35,7 +45,7 @@ const betreffOptions = [
       <div class="fancy-select" data-fancy-select data-service-select>
         <input
           type="hidden"
-          name="Betreff"
+          name={field(F.betreff)}
           value="Allgemeine Anfrage"
           data-fancy-value
         />
@@ -71,27 +81,41 @@ const betreffOptions = [
 
     <label>
       Name
-      <input type="text" name="Name" required autocomplete="name" />
+      <input type="text" name={field(F.name)} required autocomplete="name" />
     </label>
     <label>
       E-Mail
-      <input type="email" name="E-Mail" required autocomplete="email" />
+      <input type="email" name={field(F.email)} required autocomplete="email" />
     </label>
     <label>
       Telefon
-      <input type="tel" name="Telefon" autocomplete="tel" />
+      <input type="tel" name={field(F.telefon)} autocomplete="tel" data-phone />
     </label>
     <label>
       Wunschtermin
-      <input type="text" name="Wunschtermin" placeholder="z. B. Freitag Nachmittag" />
+      <input type="text" name={field(F.wunschtermin)} placeholder="z. B. Freitag Nachmittag" />
     </label>
     <label class="contact-form__full">
       Nachricht
-      <textarea name="Nachricht" rows="5" required></textarea>
+      <textarea name={field(F.nachricht)} rows="5" required></textarea>
+    </label>
+    <label class="contact-form__full contact-form__consent">
+      <input type="checkbox" name={field(F.datenschutz)} value="Zustimmung erteilt" required />
+      <span>
+        Ich bin einverstanden, dass meine Angaben zur Bearbeitung meiner Anfrage verwendet
+        werden. Details in der <a href={withBase('/datenschutz/')}>Datenschutzerklärung</a>.
+      </span>
     </label>
   </div>
 
   <button class="btn btn--accent" type="submit">Nachricht senden</button>
+  <p class="contact-form__status contact-form__status--ok" data-form-success hidden tabindex="-1" role="status">
+    Danke! Deine Nachricht ist angekommen – ich melde mich so schnell wie möglich bei dir.
+  </p>
+  <p class="contact-form__status contact-form__status--error" data-form-error hidden tabindex="-1" role="alert">
+    Das hat leider nicht geklappt. Bitte versuch es noch einmal oder melde dich direkt:
+    <a href={site.phoneHref}>{site.phone}</a> · <a href={`mailto:${site.email}`}>{site.email}</a>
+  </p>
 </form>
 
 <style>
@@ -322,9 +346,68 @@ const betreffOptions = [
   .fancy-select__chevron {
     font-size: 1rem;
   }
+
+  /* Fallenfeld: für Menschen unsichtbar, aber nicht display:none (manche Bots ignorieren das) */
+  .contact-form__hp {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+  }
+
+  .contact-form label.contact-form__consent {
+    display: flex;
+    gap: 0.6rem;
+    align-items: flex-start;
+    font-weight: 400;
+    font-size: 0.875rem;
+    line-height: 1.5;
+  }
+
+  .contact-form__consent input {
+    flex-shrink: 0;
+    width: 1.15rem;
+    height: 1.15rem;
+    margin-top: 0.15rem;
+    accent-color: var(--color-green-dark);
+  }
+
+  .contact-form__consent a {
+    color: inherit;
+    text-decoration: underline;
+  }
+
+  .contact-form__status {
+    margin: 1rem 0 0;
+    padding: 0.85rem 1rem;
+    border-radius: 0.65rem;
+    font-size: 0.95rem;
+  }
+
+  .contact-form__status--ok {
+    background: color-mix(in srgb, var(--color-green) 14%, white);
+    color: var(--color-green-dark);
+  }
+
+  .contact-form__status--error {
+    background: #fbeaea;
+    color: #8a1f1f;
+  }
+
+  .contact-form__status a {
+    color: inherit;
+    font-weight: 600;
+  }
 </style>
 
 <script>
+  import { guardForm } from '../lib/form-guard';
+
+  document
+    .querySelectorAll<HTMLFormElement>('form[data-mailtory]')
+    .forEach((form) => guardForm(form));
+
   document.querySelectorAll<HTMLElement>('[data-fancy-select]').forEach((root) => {
     const trigger = root.querySelector<HTMLButtonElement>('[data-fancy-trigger]');
     const list = root.querySelector<HTMLElement>('[data-fancy-list]');
@@ -359,6 +442,9 @@ const betreffOptions = [
         options.find((item) => item.classList.contains('is-active')) ?? options[0];
       active.focus();
     };
+
+    // Nach erfolgreichem Senden (form.reset) Auswahl zurücksetzen
+    root.closest('form')?.addEventListener('form:reset', () => setValue(options[0]));
 
     const slug = new URLSearchParams(window.location.search).get('service');
     if (slug) {

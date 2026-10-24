@@ -1,0 +1,48 @@
+# Deploy atelier-haarkunst.de auf den eigenen Server (Aufbau wie alcartron-hifi).
+# Repo-Secrets: SSH_PRIVATE_KEY, SSH_HOST, SSH_KNOWN_HOSTS
+# Vorerst nur von Hand (Actions → Run workflow). Nach dem Domain-Umzug „push“ auf master ergänzen.
+name: Deploy to Server
+
+on:
+  workflow_dispatch:
+
+# Nie zwei Deploys gleichzeitig
+concurrency:
+  group: deploy-server
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: SSH vorbereiten
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          SSH_KNOWN_HOSTS: ${{ secrets.SSH_KNOWN_HOSTS }}
+        run: |
+          mkdir -p ~/.ssh
+          printf '%s\n' "$SSH_PRIVATE_KEY" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          printf '%s\n' "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
+
+      - name: Deploy
+        env:
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+        run: |
+          REL=$(date +%Y%m%d%H%M%S)
+          BASE=/var/www/atelier-haarkunst
+          HOST=deploy-atelier@$SSH_HOST
+          rsync -az dist/ "$HOST:$BASE/releases/$REL/"
+          ssh "$HOST" "ln -sfn $BASE/releases/$REL $BASE/current.tmp && mv -Tf $BASE/current.tmp $BASE/current && cd $BASE/releases && ls -1t | tail -n +6 | xargs -r rm -rf"

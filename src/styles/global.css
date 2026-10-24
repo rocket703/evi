@@ -119,6 +119,11 @@ ul {
   top: 1rem;
 }
 
+/* Ziel des Skip-Links bekommt Fokus, aber keinen Rahmen um die ganze Seite */
+main:focus {
+  outline: none;
+}
+
 .container {
   width: var(--container);
   margin-inline: auto;

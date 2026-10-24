@@ -1,0 +1,57 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { withBase } from '../lib/paths';
+---
+
+<BaseLayout
+  title="Seite nicht gefunden"
+  description="Diese Seite gibt es nicht (mehr). Hier geht es zurück zu Atelier Haarkunst in Magdeburg-Salbke."
+  noindex
+>
+  <section class="section not-found" aria-labelledby="not-found-heading">
+    <div class="container section__intro">
+      <p class="not-found__code">404</p>
+      <h1 id="not-found-heading">Diese Seite gibt es leider nicht</h1>
+      <p>
+        Vielleicht hat sich die Adresse geändert, seit die Website neu ist. Hier
+        findest du alles Wichtige:
+      </p>
+      <div class="not-found__links">
+        <a class="btn" href={withBase('/')}>Zur Startseite</a>
+        <a class="btn btn--ghost" href={withBase('/services/')}>Leistungen</a>
+        <a class="btn btn--ghost" href={withBase('/preisliste/')}>Preisliste</a>
+        <a class="btn btn--ghost" href={withBase('/kontakt/')}>Kontakt</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .not-found {
+    padding-block: clamp(4rem, 12vw, 7rem);
+  }
+
+  .not-found__code {
+    margin: 0;
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: 700;
+    font-size: clamp(4rem, 14vw, 7rem);
+    line-height: 1;
+    color: var(--color-accent-text);
+  }
+
+  .not-found h1 {
+    font-family: var(--font-display);
+    font-style: italic;
+    color: var(--color-green-dark);
+  }
+
+  .not-found__links {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+  }
+</style>

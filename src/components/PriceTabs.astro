@@ -261,24 +261,42 @@ import { withBase } from '../lib/paths';
 </style>
 
 <script>
-  const tabs = document.querySelectorAll('[data-price-tab]');
+  const tabs = [...document.querySelectorAll<HTMLButtonElement>('[data-price-tab]')];
   const panels = document.querySelectorAll('[data-price-panel]');
 
-  tabs.forEach((tab) => {
-    tab.addEventListener('click', () => {
-      const id = tab.getAttribute('data-price-tab');
+  const select = (tab: HTMLButtonElement, focus = false) => {
+    const id = tab.getAttribute('data-price-tab');
 
-      tabs.forEach((t) => {
-        const active = t === tab;
-        t.classList.toggle('is-active', active);
-        t.setAttribute('aria-selected', String(active));
-      });
+    tabs.forEach((t) => {
+      const active = t === tab;
+      t.classList.toggle('is-active', active);
+      t.setAttribute('aria-selected', String(active));
+      // Nur der aktive Tab ist per Tab erreichbar, die anderen per Pfeiltaste
+      t.tabIndex = active ? 0 : -1;
+    });
 
-      panels.forEach((panel) => {
-        const active = panel.getAttribute('data-price-panel') === id;
-        panel.classList.toggle('is-active', active);
-        panel.toggleAttribute('hidden', !active);
-      });
+    panels.forEach((panel) => {
+      const active = panel.getAttribute('data-price-panel') === id;
+      panel.classList.toggle('is-active', active);
+      panel.toggleAttribute('hidden', !active);
+    });
+
+    if (focus) tab.focus();
+  };
+
+  tabs.forEach((tab, i) => {
+    tab.tabIndex = tab.getAttribute('aria-selected') === 'true' ? 0 : -1;
+    tab.addEventListener('click', () => select(tab));
+    tab.addEventListener('keydown', (event) => {
+      const keys: Record<string, number> = {
+        ArrowRight: i + 1,
+        ArrowLeft: i - 1,
+        Home: 0,
+        End: tabs.length - 1,
+      };
+      if (!(event.key in keys)) return;
+      event.preventDefault();
+      select(tabs[(keys[event.key] + tabs.length) % tabs.length], true);
     });
   });
 </script>

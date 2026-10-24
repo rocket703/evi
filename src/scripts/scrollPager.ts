@@ -51,6 +51,25 @@ export function initScrollPager(root: ParentNode = document) {
       });
     });
 
+    // Per Tastatur erreichbar, aber nur wenn der Streifen wirklich scrollt (mobil)
+    const syncFocusable = () => {
+      if (track.scrollWidth > track.clientWidth + 1) track.tabIndex = 0;
+      else track.removeAttribute('tabindex');
+    };
+    syncFocusable();
+    window.addEventListener('resize', syncFocusable, { passive: true });
+
+    track.addEventListener('keydown', (event) => {
+      if (event.key === 'ArrowLeft') {
+        event.preventDefault();
+        goTo(index - 1);
+      }
+      if (event.key === 'ArrowRight') {
+        event.preventDefault();
+        goTo(index + 1);
+      }
+    });
+
     track.addEventListener(
       'scroll',
       () => {
